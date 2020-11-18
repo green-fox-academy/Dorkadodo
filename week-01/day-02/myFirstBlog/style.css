@@ -1,0 +1,65 @@
+@font-face {
+    font-family: Lobster;
+    src: url(./Lobster-Regular.ttf);
+  }
+
+body {
+    background-image: url(./assets/old-paper-texture.jpg);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 0 0;
+}
+
+header {
+    padding: 1px 10%;
+    font-family: Lobster;
+    background-color: rgb(77, 34, 0);
+    color: antiquewhite;
+    font-size: 20px;
+}
+
+main {
+    padding: 0 10%;
+}
+
+main h2 {
+    font-family: Lobster;
+    font-size: 30px;
+}
+
+main h3 {
+    font-family: Lobster;
+    font-size: 20px;
+}
+
+#new-post > p {
+    border: 2px solid black;
+    color: rgb(136, 135, 135);
+    padding: 3px;
+}
+
+figure {
+    border: 3px solid black;
+    border-radius: 10px;
+    margin: auto;
+    padding: 1px 12px;
+    text-align: right;
+    display:inline;
+    background-color: rgba(226, 166, 98, 0.74);
+}
+
+.post {
+    border: 2px solid black;
+    padding: 1px 8px;
+    margin: 12px 0;
+}
+
+.article-title {
+    font-weight: bold;
+    font-style: italic;
+    font-size: medium;
+}
+
+.author {
+    text-align: right;
+    font-style: italic;
+}
