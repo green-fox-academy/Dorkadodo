@@ -15,15 +15,10 @@ public class DrawDiagonal {
                 System.out.println();
             } else {
                 for (j = 0; j < num; j++) {
-                    if ((j == 0) || (j == (num - 1))) {                        //a sor első és utolsó helye csillag
+                    if ((j == 0) || (j == (num - 1)) || (i == j)) {           //a sor első és utolsó helye csillag
                         System.out.print("%");
                     } else {
-                        if (i == j) {
-                            System.out.print("%");
-                        }
-                        else {
-                            System.out.print(" ");
-                        }
+                        System.out.print(" ");
                     }
                 }
                 System.out.println();
