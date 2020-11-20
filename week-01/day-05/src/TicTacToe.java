@@ -19,7 +19,8 @@ public class TicTacToe {
         }
 
         int[][] Steps = new int[2][9];
-        for (int step = 1; step < 10; step++) {
+        boolean diagonal = false;
+        for (int step = 1; step < 10; step++) {            //get the step, check for issues, draw the table
             //get a number
             Scanner scanner = new Scanner(System.in);
             System.out.println("Row: ");
@@ -37,44 +38,28 @@ public class TicTacToe {
             }
 
             //change the coordinates to table-coordinates
-            switch (row) {
-                case 1: {
-                    row = 2;
-                }
-                case 2: {
-                    row = 6;
-                }
-                case 3: {
-                    row = 10;
-                }
-            }
-            switch (column) {
-                case 1: {
-                    column = 2;
-                }
-                case 2: {
-                    column = 6;
-                }
-                case 3: {
-                    column = 10;
-                }
-            }
+            row = (row * 4) - 3;
+            column = (column * 4) - 3;
 
             //check: not occupied
             boolean notoccupied;
             do {
-                notoccupied = true;
-                for (int j = 0; j < step; j++) {
+                notoccupied = false;
+                for (int j = 0; j < (step - 1); j++) {
                     if ((Steps[0][j] == row) && (Steps[1][j] == column)) {
-                        notoccupied = false;
+                        notoccupied = true;
+                        System.out.println("This tile is already occupied. Choose a new tile!");
+                        System.out.println("Row: ");
+                        row = scanner.nextInt();
+                        System.out.println("Column: ");
+                        column = scanner.nextInt();
+
+                        row = (row * 4) - 3;
+                        column = (column * 4) - 3;
                         break;
                     }
                 }
-                System.out.println("This tile is already occupied. Choose a new tile!");
-                System.out.println("Row: ");
-                row = scanner.nextInt();
-                System.out.println("Column: ");
-                column = scanner.nextInt();
+
             } while (notoccupied);
 
             //store the step
@@ -89,40 +74,74 @@ public class TicTacToe {
                 } else {
                     for (int k2 = 0; k2 < 11; k2++) {                   //egyes mezőket számolja a sorban
                         boolean tileXO = false;
-                        for (int l = 0; l < step; l++) {
+                        for (int l = 0; l < step; l++) {                         //
                             if ((Steps[0][l] == k1) && (Steps[1][l] == k2)) {
                                 tileXO = true;
                             }
-
+                            if (tileXO) {
+                                //ha a tömb indexe páratlan és a tartalma nem 0, "X"et írunk
+                                if (l % 2 == 1) {
+                                    System.out.print("X");
+                                }
+                                //ha az index páros, "O"-t írunk
+                                else if (l % 2 == 0) {
+                                    System.out.print("O");
+                                }
+                                break;
+                            }
+                        }
+                        if (!tileXO) {
+                            if (((k2 + 1) % 4) == 0) {
+                                System.out.print("|");
+                            } else {
+                                System.out.print(" ");
+                            }
                         }
 
-                        //ha a tömb indexe páratlan és a tartalma nem 0, "X"et írunk
-                        if ((step % 2 == 1) && tileXO) {
-                            System.out.println("X");
-                        }
-                        //ha az index páros, "O"-t írunk
-                        else if ((step % 2 == 0) && tileXO) {
-                            System.out.println("O");
-                        } else if (((k2 + 1) % 4) == 0) {
-                            System.out.print("|");
-                        } else {
-                            System.out.print(" ");
-                        }
                     }
-                    System.out.println();
+                }
+                System.out.println();
+            }
+
+            //check: did he win - are the tiles 11-55-99 or 19-55-91 all odd or even indexed
+
+            int a1 = -1;
+            int a2 = -1;
+            int a3 = -1;
+            int b1 = -1;
+            int b3 = -1;
+            for (int i = 0; i < 9; i++) {
+                if ((Steps[0][i] == 1) && (Steps[1][i] == 1)) {
+                    a1 = i;
+                }
+                else if ((Steps[0][i] == 5) && (Steps[1][i] == 5)) {
+                    a2 = i;
+                }
+                else if ((Steps[0][i] == 9) && (Steps[1][i] == 9)) {
+                    a3 = i;
+                }
+                else if ((Steps[0][i] == 1) && (Steps[1][i] == 9)) {
+                    b1 = i;
+                }
+                else if ((Steps[0][i] == 9) && (Steps[1][i] == 1)) {
+                    b3 = i;
+                }
+
+                if (((a1 >= 0) && (a2 >= 0) && (a3 >= 0)) && (!(a1 % 2 == step % 2 ) && !(a2 % 2 == step % 2) && !(a3 % 2 == step % 2))) {
+                    diagonal = true;
+                } else if (((b1 >= 0) && (a2 >= 0) && (b3 >= 0)) && (!(b1 % 2 == step % 2) && !(a2 % 2 == step % 2) && !(b3 % 2 == step % 2))) {
+                    diagonal = true;
                 }
             }
+            if (diagonal) {
+                System.out.println("Congratulations! You won!");
+                break;
+            }
         }
-
+        if (!diagonal){
+            System.out.println("You filled all the tiles. Nobody won.");
+        }
     }
-
-
-    //get the previous image
-    //insert the new figure
-
-    //check : between 1-3
-
-
-    //check: did he win
-
 }
+
+
