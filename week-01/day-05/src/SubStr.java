@@ -8,8 +8,13 @@ public class SubStr {
         String input = scanner.nextLine();
         System.out.println("Now please write a word!");
         String q = scanner.nextLine();
-        System.out.println("The index of the first letter of the word " +
-                "in the sentence is " + subStr(input, q));
+        if (input.length() >= q.length()) {
+            System.out.println("The index of the first letter of the word " +
+                    "in the sentence is " + subStr(input, q));
+        } else {
+            System.out.println("The index of the first letter of the word " +
+                    "in the sentence is -1");
+        }
 
     }
     // Create a function that takes two strings as a parameter
