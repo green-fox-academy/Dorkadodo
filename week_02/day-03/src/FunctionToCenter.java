@@ -47,6 +47,7 @@ public class FunctionToCenter {
         @Override
         protected void paintComponent(Graphics graphics) {
             super.paintComponent(graphics);
+            this.setBackground(Color.BLACK);
             mainDraw(graphics);
         }
     }

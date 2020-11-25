@@ -50,6 +50,7 @@ public class FunctionToCenter2 {
         @Override
         protected void paintComponent(Graphics graphics) {
             super.paintComponent(graphics);
+            this.setBackground(Color.GRAY);
             mainDraw(graphics);
         }
     }
