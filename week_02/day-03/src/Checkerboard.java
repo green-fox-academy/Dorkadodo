@@ -17,11 +17,11 @@ public class Checkerboard {
 
     public static void checkerboard(int i, int j, Graphics graphics) {
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(i * 40, j * 80 + (i % 2) * 40, 40, 40);
+        graphics.fillRect(i * WIDTH/8, j * WIDTH/4 + (i % 2) * WIDTH/8, WIDTH/8, WIDTH/8);
     }
 
     static int WIDTH = 320;
-    static int HEIGHT = 320;
+    static int HEIGHT = WIDTH;
 
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("Drawing");
