@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
@@ -7,6 +8,8 @@ public class Hexagons {
 
 
     public static void mainDraw(Graphics graphics) {
+        Random rand = new Random();
+
         for (int i = 0; i < 4; i++) {
             hexagons(i, graphics);
         }
@@ -17,27 +20,30 @@ public class Hexagons {
     }
 
     public static void hexagons(int i, Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        Random rand = new Random();
         int firstItem;
         for (int k = 0; k <= i; k++) {
+            graphics.setColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
             int[] xPoints = createXPoints(i, k);
             firstItem = (int) (i * 10 * Math.sqrt(3));
             int[] yPoints = createYPoints(i, firstItem);
-            graphics.drawPolygon(xPoints, yPoints, 6);
+            graphics.fillPolygon(xPoints, yPoints, 6);
             firstItem = (int) (HEIGHT - (i + 2) * Math.sqrt(3) * 10);
             yPoints = createYPoints(i, firstItem);
-            graphics.drawPolygon(xPoints, yPoints, 6);
+            graphics.setColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+            graphics.fillPolygon(xPoints, yPoints, 6);
         }
     }
 
     public static void hexagonsMiddle(int i, Graphics graphics) {
-        graphics.setColor(Color.BLACK);
+        Random rand1 = new Random();
         for (int j = 2; j < 4; j++) {
             for (int k = 0; k <= j; k++) {
                 int[] xPoints = createXPoints(j, k);
                 int firstItem = (int) ((2 * i + j + 2) * 10 * Math.sqrt(3));
                 int[] yPoints = createYPoints(i, firstItem);
-                graphics.drawPolygon(xPoints, yPoints, 6);
+                graphics.setColor(new Color(rand1.nextInt(256), rand1.nextInt(256), rand1.nextInt(256)));
+                graphics.fillPolygon(xPoints, yPoints, 6);
             }
         }
     }

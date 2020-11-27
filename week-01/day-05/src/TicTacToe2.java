@@ -1,16 +1,14 @@
 import java.util.Scanner;
-
 public class TicTacToe2 {
     public static void main(String[] args) {
-        //draw the table
         drawTheTable();
 
         Scanner scanner = new Scanner(System.in);
         int[][] Steps = new int[2][9];
         int[][] Steps0 = new int[2][5];
         int[][] StepsX = new int[2][5];
-        boolean winner = false;
-        for (int step = 1; step < 10; step++) {            //get the step, check for issues, draw the table
+        boolean isWinner = false;
+        for (int step = 1; step < 10; step++) {
 
             //get a number
             System.out.println("Row: ");
@@ -18,8 +16,7 @@ public class TicTacToe2 {
             System.out.println("Column: ");
             int column = scanner.nextInt();
 
-            //check: between 1-3 and not occupied
-            while (!(checkBetween(row, column) && notOccupied(row, column, step, Steps))) {
+            while (!(checkBetween13(row, column) && checkNotOccupied(row, column, step, Steps))) {
                 System.out.println("Row: ");
                 row = scanner.nextInt();
                 System.out.println("Column: ");
@@ -35,18 +32,14 @@ public class TicTacToe2 {
             Steps[1][step - 1] = column;
 
             //print the table
-            for (int k1 = 0; k1 < 11; k1++) {                      //sorokat számolja
+            for (int k1 = 0; k1 < 11; k1++) {
                 if ((k1 + 1) % 4 == 0) {
                     System.out.print("---+---+---");
                 } else {
                     for (int k2 = 0; k2 < 11; k2++) {                   //egyes mezőket számolja a sorban
-                        boolean tileXO = drawTheSeps(step, k1, k2, Steps);
+                        boolean tileXO = shouldDrawTheSeps(step, k1, k2, Steps);
                         if (!tileXO) {
-                            if (((k2 + 1) % 4) == 0) {
-                                System.out.print("|");
-                            } else {
-                                System.out.print(" ");
-                            }
+                            drawTheColumns(k2);
                         }
                     }
                 }
@@ -57,30 +50,30 @@ public class TicTacToe2 {
             if (step % 2 == 1) {
                 Steps0[0][step / 2] = row;
                 Steps0[1][step / 2] = column;
-                winner = rowOrColumWins(Steps0);                        //filled a row or column
-                if (!winner){
-                    winner =diagonalWins(Steps0);                       //filled a diagonal
+                isWinner = rowOrColumnWins(Steps0);
+                if (!isWinner) {
+                    isWinner = diagonalWins(Steps0);
                 }
             } else {
                 StepsX[0][step / 2 - 1] = row;
                 StepsX[1][step / 2 - 1] = column;
-                winner = rowOrColumWins(StepsX);                        //filled a row or column
-                if (!winner){
-                    winner =diagonalWins(StepsX);                       //filled a diagonal
+                isWinner = rowOrColumnWins(StepsX);
+                if (!isWinner) {
+                    isWinner = diagonalWins(StepsX);
                 }
             }
 
-            if (winner) {
+            if (isWinner) {
                 System.out.println("Congratulations! You won!");
                 break;
             }
         }
-        if (!winner) {
+        if (!isWinner) {
             System.out.println("You filled all the tiles. Nobody won.");
         }
     }
 
-    public static boolean rowOrColumWins(int[][] stepsX0) {
+    public static boolean rowOrColumnWins(int[][] stepsX0) {
         boolean rowcolumn;
         int counter01 = 0;
         int counter02 = 0;
@@ -137,18 +130,14 @@ public class TicTacToe2 {
                 System.out.println("---+---+---");
             } else {
                 for (int j = 0; j < 11; j++) {
-                    if (((j + 1) % 4) == 0) {
-                        System.out.print("|");
-                    } else {
-                        System.out.print(" ");
-                    }
+                    drawTheColumns(j);
                 }
                 System.out.println();
             }
         }
     }
 
-    public static boolean checkBetween(int row, int column) {
+    public static boolean checkBetween13(int row, int column) {
         boolean checkbetween = (0 < row) && (row <= 3) && (0 < column) && (column <= 3);
         if (!checkbetween) {
             System.out.println("The row and column number should be between 1 and 3!");
@@ -156,7 +145,7 @@ public class TicTacToe2 {
         return checkbetween;
     }
 
-    public static boolean notOccupied(int row, int column, int step, int[][] Steps) {
+    public static boolean checkNotOccupied(int row, int column, int step, int[][] Steps) {
         boolean notoccupied = true;
         row = (row * 4) - 3;
         column = (column * 4) - 3;
@@ -170,9 +159,9 @@ public class TicTacToe2 {
         return notoccupied;
     }
 
-    public static boolean drawTheSeps(int step, int k1, int k2, int[][] Steps) {
+    public static boolean shouldDrawTheSeps(int step, int k1, int k2, int[][] Steps) {
         boolean tileXO = false;
-        for (int l = 0; l < step; l++) {                         //
+        for (int l = 0; l < step; l++) {
             if ((Steps[0][l] == k1) && (Steps[1][l] == k2)) {
                 tileXO = true;
             }
@@ -182,13 +171,21 @@ public class TicTacToe2 {
                     System.out.print("X");
                 }
                 //ha az index páros, "O"-t írunk
-                else if (l % 2 == 0) {
+                else {
                     System.out.print("O");
                 }
                 break;
             }
         }
         return tileXO;
+    }
+
+    public static void drawTheColumns(int j) {
+        if (((1+j) % 4) == 0) {
+            System.out.print("|");
+        } else {
+            System.out.print(" ");
+        }
     }
 }
 
