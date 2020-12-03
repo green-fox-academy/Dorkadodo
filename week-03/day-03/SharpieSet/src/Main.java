@@ -26,11 +26,12 @@ public class Main {
         Random random = new Random();
 
         for (int i = 0; i < 80; i++) {
-            sharpieSet.sharpieSet.get(random.nextInt(9)).use(random.nextInt(20));
+            sharpieSet.getSharpie(random.nextInt(9)).use(random.nextInt(20));
         }
-        System.out.println(sharpieSet.sharpieSet.size());
+
+        System.out.println(sharpieSet.getSharpieSet().size());
         System.out.println(sharpieSet.countUsable());
         sharpieSet.removeTrash();
-        System.out.println(sharpieSet.sharpieSet.size());
+        System.out.println(sharpieSet.getSharpieSet().size());
     }
 }
