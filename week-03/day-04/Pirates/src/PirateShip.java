@@ -16,8 +16,6 @@ public class PirateShip {
 
         } catch (Exception ex) {
             System.out.println("Sorry, something went wrong.");
-        } catch (Error er) {
-            System.out.println("Sorry, something went wrong.");
         }
     }
 }
