@@ -18,13 +18,13 @@ public class SierpienskiCarpet {
         if (!(side > 1)) {
             return;
         }
-        graphics.drawRect(startX, startY, side, side);
+        graphics.fillRect(startX, startY, side, side);
         int[] startXArray = {-((2 * side) / 3), -((2 * side) / 3), -((2 * side) / 3), side / 3,
                 (4 * side) / 3, (4 * side) / 3, (4 * side) / 3, side / 3};
         int[] startYArray = {-((2 * side) / 3), side / 3, (4 * side) / 3, (4 * side) / 3,
                 (4 * side) / 3, side / 3, -((2 * side) / 3), -((2 * side) / 3)};
         for (int i = 0; i < 8; i++) {
-            graphics.drawRect(startX + startXArray[i], startY + startYArray[i], side / 3, side / 3);
+            graphics.fillRect(startX + startXArray[i], startY + startYArray[i], side / 3, side / 3);
             sierpienskiCarpet(startX + startXArray[i], startY + startYArray[i], side / 3, graphics);
         }
     }
