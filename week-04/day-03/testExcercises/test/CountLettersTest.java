@@ -20,4 +20,20 @@ public class CountLettersTest {
         HashMap<Character, Integer> dictionary = countLetters.countLetters("abab cGc c");
         assertEquals(dictionaryExpected, dictionary);
     }
+
+    @Test
+    public void countEmptyString() {
+        countLetters = new CountLetters();
+        HashMap<Character, Integer> dictionaryExpected = new HashMap<>();
+        HashMap<Character, Integer> dictionary = countLetters.countLetters("");
+        assertEquals(dictionaryExpected, dictionary);
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void countNullString() {
+        countLetters = new CountLetters();
+        HashMap<Character, Integer> dictionaryExpected = new HashMap<>();
+        HashMap<Character, Integer> dictionary = countLetters.countLetters(null);
+        assertEquals(dictionaryExpected, dictionary);
+    }
 }
