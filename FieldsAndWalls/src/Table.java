@@ -1,4 +1,6 @@
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Table {
     private int numberOfRowsAndColumns;
@@ -8,6 +10,9 @@ public class Table {
     public Table(int numberOfRowsAndColumns) {
         table = new ArrayList<List<Tiles>>();
         this.numberOfRowsAndColumns = numberOfRowsAndColumns;
+    }
+    public Table() {
+        this(10);
     }
 
     public void printTable() {
@@ -23,7 +28,7 @@ public class Table {
         return table;
     }
 
-    public int getCounterOfCheckedFields() {
+    private int getCounterOfCheckedFields() {
         return counterOfCheckedFields;
     }
 
@@ -45,7 +50,8 @@ public class Table {
         return table;
     }
 
-    public void getCorrectTable() {
+    public List<List<Tiles>> getCorrectTable() {
+        generateTable();
         while (!(isTheTableCorrect())) {
             int[] indexOfField = firstNotCheckedField();
             Tiles tile = new Field();
@@ -55,13 +61,25 @@ public class Table {
                 table.get(indexOfField[0] - 1).set(indexOfField[1], tile);
             }
             floodFillCheck();
-            printTable();                            //for testing
+            /*printTable();                            //for testing
             System.out.println();
             System.out.println(isTheTableCorrect());
             System.out.println("CounterOfCheckedFields: " + getCounterOfCheckedFields());
-            System.out.println("Fields: " + numberOfFields());
+            System.out.println("Fields: " + numberOfFields()); */
+        }
+        return table;
+    }
+
+    public void drawTable (Graphics graphics){
+        for (int i = 0; i < numberOfRowsAndColumns; i++) {
+            for (int j = 0; j < numberOfRowsAndColumns; j++) {
+                table.get(i).get(j).drawTile(i*(TableDrawings.WIDTH/numberOfRowsAndColumns), j*(TableDrawings.WIDTH/numberOfRowsAndColumns),
+                        TableDrawings.WIDTH/numberOfRowsAndColumns, TableDrawings.WIDTH/numberOfRowsAndColumns, graphics);
+            }
         }
     }
+
+
 
     private int[] firstNotCheckedField() {
         int[] indexOfField = {-1, -1};
@@ -79,7 +97,7 @@ public class Table {
         return indexOfField;
     }
 
-    public int numberOfFields() {
+    private int numberOfFields() {
         int numberOfFields = 0;
         for (int i = 0; i < table.size(); i++) {
             for (int j = 0; j < table.get(0).size(); j++) {
@@ -91,14 +109,14 @@ public class Table {
         return numberOfFields;
     }
 
-    public boolean isTheTableCorrect() {
+    private boolean isTheTableCorrect() {
         if (floodFillCheck() == numberOfFields()) {
             return true;
         }
         return false;
     }
 
-    public int floodFillCheck() {
+    private int floodFillCheck() {
         setCheckedStatusToZero();
         Tiles tile = new Field();
         table.get(0).set(0, tile);
@@ -131,7 +149,6 @@ public class Table {
         }
         return false;
     }
-
 
     private void continueToNextField(int i, int j) {
         table.get(i).get(j).setWasChecked(true);
