@@ -7,28 +7,29 @@
     <link href="./style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <main>
-        <section id="SignUpBlock">
+    <table>
+        <td id="SignUpBlock">
             <h2>Sign up</h2>
             <form action=https://newsletter-ws.herokuapp.com/register method="POST">
-                <input type="text" id="name" name="name" required minlength="3" placeholder="Username" autofocus>
+                <input type="text" id="name" name="name" autofocus required minlength="3" placeholder="Username">
                 <input type="email" id="email" name="email" required placeholder="E-mail">
-                <input type="password" id="password" name="password" minlength="6" placeholder="Password">
-                <input type="password" id="passwordConfirmation" name="passwordConfirmation" minlength="6" placeholder="Retype password">
-                <button>Sign me up</button>
+                <input type="password" id="password" name="password" required minlength="6" placeholder="Password">
+                <input type="password" id="passwordConfirmation" name="passwordConfirmation" required minlength="6" placeholder="Retype password">
+                <button id="signup">Sign me up</button>
             </form>
-        </section>
+        </td>
 
-        <div>
-            <p>OR</p>
-        </div>
+        <td>
+            <p id="Or">OR</p>
+        </td>
 
-        <section id="LogInBlock">
-            <button>Log in with facebook</button>
-            <button>Log in with Twitter</button>
-            <button>Log in with Google</button>
-            <button>Log in</button>
-        </section>
-    </main>
+        <td id="SignInBlock">
+            <button id="facebook">Log in with facebook</button>
+            <button id="twitter">Log in with Twitter</button>
+            <button id="google">Log in with Google</button>
+            <button id="login">Log in</button>
+        </td>
+
+        </table>
 </body>
 </html>
