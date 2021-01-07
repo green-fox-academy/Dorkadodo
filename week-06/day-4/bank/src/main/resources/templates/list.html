@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account List</title>
+    <link th:href="@{/style.css}" type="text/css" rel="stylesheet">
+</head>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Balance</th>
+        <th>Animal Type</th>
+        <th>King</th>
+        <th>Good or Bad</th>
+
+    </tr>
+    <tr th:each="account : ${accountList}" th:style="${account.king} ? 'color: darkred'">
+        <td th:utext="${account.id}"/>
+        <td th:utext="${account.name}"/>
+        <td th:utext="${account.balance} + '.00 Gold'"/>
+        <td th:utext="${account.animalType}"/>
+        <td><img th:src="${account.king} ? @{/crown.png} "></td>
+        <td th:text="${account.goodGuy} ? 'Good Guy' : 'Bad Guy'"></td>
+        <td>
+            <form method="post" th:action="@{/increase(accountId=${account.id})}"/>
+            <button type="submit">Increase</button>
+        </td>
+    </tr>
+</table>
+
+<h2>Add new account</h2>
+<form th:object="${account}" method="post" th:action="@{/new-account(account=${account})}" />
+<label for="name">Name:</label>
+<input type="text" th:field="*{name}" >
+<label for="balance">Balance:</label>
+<input type="number" th:field="*{balance}">
+<label for="animalType">Animal Type:</label>
+<input type="text" th:field="*{animalType}" >
+<label for="king">Animal is King:</label>
+<input type="text" th:field="*{king}" >
+<label for="goodGuy">Animal is a good Guy:</label>
+<input type="text" th:field="*{goodGuy}" >
+<button type="submit">Submit</button>
+
+</body>
+</html>

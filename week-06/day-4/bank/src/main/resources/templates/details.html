@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+    <link th:href="@{/style.css}" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div th:object="${account}">
+        <p th:text="'Name: ' + *{name}"/>
+        <p th:text="'Balance: ' + *{balance} + '.00 Gold'"/>
+        <p th:text="'AnimalType: ' + *{animalType}"/>
+    </div>
+
+</body>
+</html>
