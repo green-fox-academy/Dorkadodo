@@ -19,7 +19,12 @@
     </nav>
 
     <main>
+        <br>
 
+        <form method="post" th:action="@{/search}">
+            <input type="text" id="searchword" name="searchword" placeholder="...something like nike">
+            <button type="submit">Search</button>
+        </form>
 
         <table>
             <tr>
@@ -35,6 +40,7 @@
                 <td id="quantityOfStock" th:text="${item.quantityOfStock}" />
             </tr>
         </table>
+
     </main>
 </body>
 </html>

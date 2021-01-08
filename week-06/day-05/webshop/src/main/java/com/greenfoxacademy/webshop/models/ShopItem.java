@@ -4,8 +4,8 @@ public class ShopItem {
 
     private String name;
     private String description;
-    private int price;
-    private int quantityOfStock;
+    private Integer price;
+    private Integer quantityOfStock;
 
     public ShopItem(String name, String description, int price, int quantityOfStock) {
         this.name = name;
@@ -22,11 +22,11 @@ public class ShopItem {
         return description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public int getQuantityOfStock() {
+    public Integer getQuantityOfStock() {
         return quantityOfStock;
     }
 }

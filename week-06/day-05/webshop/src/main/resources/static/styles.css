@@ -14,7 +14,15 @@ nav button {
     font-family: Helvetica, Arial, sans-serif;
     border: 1px solid darkblue;
     border-radius: 4px;
-    margin: 3px 6px;
+    margin: 3px auto;
+}
+
+main button {
+    padding: 6px 12px 3px 12px;
+    font-family: Helvetica, Arial, sans-serif;
+    border: 1px solid darkblue;
+    border-radius: 4px;
+    margin: 3px auto;
 }
 
 table {
