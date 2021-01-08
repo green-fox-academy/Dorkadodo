@@ -6,7 +6,7 @@
     <link th:href="@{/styles.css}" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <h1>My Shop</h1>
+<h1> <a th:href="@{/webshop}">My Shop</a></h1>
 
     <hr>
     <nav>
@@ -21,9 +21,9 @@
     <main>
         <br>
 
-        <form method="post" th:action="@{/search}">
-            <input type="text" id="searchword" name="searchword" placeholder="...something like nike">
-            <button type="submit">Search</button>
+        <form method="post" action="/search">
+            <input class="search" type="text" id="searchword" name="searchword" placeholder="...something like nike">
+            <button class="search" type="submit">Search</button>
         </form>
 
         <table>

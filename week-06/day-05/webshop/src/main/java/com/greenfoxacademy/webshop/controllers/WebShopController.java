@@ -1,6 +1,6 @@
 package com.greenfoxacademy.webshop.controllers;
 
-import com.greenfoxacademy.webshop.models.ItemList;
+import com.greenfoxacademy.webshop.models.Lists;
 import com.greenfoxacademy.webshop.models.ShopItem;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,17 +14,28 @@ import java.util.stream.Collectors;
 @Controller
 public class WebShopController {
 
-    ItemList itemList = new ItemList();
+    Lists lists = new Lists();
+
+    @GetMapping("/")
+    public String homepage() {
+        return "redirect:/webshop";
+    }
 
     @GetMapping("/webshop")
     public String webshop(Model model) {
-        model.addAttribute("itemList", itemList.getItemList());
+
+        model.addAttribute("itemList", lists.getItemList());
         return "index";
     }
 
     @GetMapping("/only-available")
     public String onlyAvailable(Model model) {
-        List<ShopItem> availableItemList = itemList.getItemList().stream()
+        if (lists.getItemList().isEmpty()) {
+            model.addAttribute("message", "Sorry, no items available");
+            return "message";
+        }
+
+        List<ShopItem> availableItemList = lists.getItemList().stream()
                 .filter(item -> item.getQuantityOfStock() > 0)
                 .collect(Collectors.toList());
         model.addAttribute("itemList", availableItemList);
@@ -33,7 +44,11 @@ public class WebShopController {
 
     @GetMapping("/cheapest-first")
     public String cheapestFirst(Model model) {
-        List<ShopItem> cheapestFirstItemList = itemList.getItemList().stream()
+        if (lists.getItemList().isEmpty()) {
+            model.addAttribute("message", "Sorry, no items available");
+            return "message";
+        }
+        List<ShopItem> cheapestFirstItemList = lists.getItemList().stream()
                 .sorted(Comparator.comparingInt(ShopItem::getPrice))
                 .collect(Collectors.toList());
         model.addAttribute("itemList", cheapestFirstItemList);
@@ -42,7 +57,11 @@ public class WebShopController {
 
     @GetMapping("/contains-nike")
     public String containsNike(Model model) {
-        List<ShopItem> containsNike = itemList.getItemList().stream()
+        if (lists.getItemList().isEmpty()) {
+            model.addAttribute("message", "Sorry, no Nike items available");
+            return "message";
+        }
+        List<ShopItem> containsNike = lists.getItemList().stream()
                 .filter(item -> item.getName().contains("Nike") || item.getDescription().contains("Nike"))
                 .collect(Collectors.toList());
         model.addAttribute("itemList", containsNike);
@@ -51,7 +70,7 @@ public class WebShopController {
 
     @GetMapping("/average-stock")
     public String averageStock(Model model) {
-        OptionalDouble optionalAverageStock = itemList.getItemList().stream()
+        OptionalDouble optionalAverageStock = lists.getItemList().stream()
                 .mapToInt(ShopItem::getQuantityOfStock)
                 .average();
         String averageStock;
@@ -67,10 +86,14 @@ public class WebShopController {
 
     @GetMapping("/most-expensive-available")
     public String mostExpensiveAvailable(Model model) {
-        Optional<ShopItem> optionalMostExpensive = itemList.getItemList().stream()
+        if (lists.getItemList().isEmpty()) {
+            model.addAttribute("message", "Sorry, no items available");
+            return "message";
+        }
+        Optional<ShopItem> optionalMostExpensive = lists.getItemList().stream()
                 .max((item1, item2) -> item1.getPrice().compareTo(item2.getPrice()));
         if (optionalMostExpensive.isPresent()) {
-            List<ShopItem> mostExpensive = itemList.getItemList().stream()
+            List<ShopItem> mostExpensive = lists.getItemList().stream()
                     .filter(item -> item.getPrice().equals(optionalMostExpensive.get().getPrice()))
                     .collect(Collectors.toList());
             model.addAttribute("itemList", mostExpensive);
@@ -83,9 +106,13 @@ public class WebShopController {
 
     @PostMapping("/search")
     public String search(@RequestParam String searchword, Model model) {
-        List<ShopItem> searchResult = itemList.getItemList().stream()
+        List<ShopItem> searchResult = lists.getItemList().stream()
                 .filter(item -> item.getName().toLowerCase().contains(searchword.toLowerCase().trim()) || item.getDescription().toLowerCase().contains(searchword.toLowerCase().trim()))
                 .collect(Collectors.toList());
+        if (searchResult.isEmpty()) {
+            model.addAttribute("message", "No items found for " + searchword.toUpperCase());
+            return "message";
+        }
         model.addAttribute("itemList", searchResult);
         return "index";
     }

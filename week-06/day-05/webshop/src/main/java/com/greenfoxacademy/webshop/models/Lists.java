@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ItemList {
+public class Lists {
     private List<ShopItem> itemList;
+    private List<Currency> currencyList;
 
-    public ItemList() {
+    public Lists() {
         itemList = new ArrayList<>();
 
         try {
@@ -28,10 +29,28 @@ public class ItemList {
             e.printStackTrace();
             System.out.println("Couldn't read or something went wrong");
         }
-
     }
 
     public List<ShopItem> getItemList() {
         return itemList;
+    }
+
+    public List<Currency> getCurrencyList(){
+        currencyList = new ArrayList<>();
+        try {
+            Stream<String>  lines = Files.lines(Path.of("src/main/resources/static/currency.csv"));
+            List<Currency> currencies = lines.map(line -> {
+                String[] arr = line.split(";");
+                return new Currency(
+                        arr[0],
+                        arr[1],
+                        Integer.parseInt(arr[2]));
+            }).collect(Collectors.toList());
+            currencyList.addAll(currencies);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Couldn't read or something went wrong");
+        }
+        return currencyList;
     }
 }

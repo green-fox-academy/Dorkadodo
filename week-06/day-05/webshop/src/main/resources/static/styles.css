@@ -5,8 +5,9 @@ body {
     font-family: Helvetica, Arial, sans-serif;
 }
 
-h1, hr {
+h1, hr, a, a:visited, a:hover  {
     color: blue;
+    text-decoration: none;
 }
 
 nav button {
