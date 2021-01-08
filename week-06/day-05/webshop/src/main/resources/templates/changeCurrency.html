@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Webshop</title>
+    <link href="/styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <h1><a href="/webshop">My Shop</a></h1>
+    <hr>
+
+    <div th:replace="fragments :: filterButtons"/>
+
+    <main>
+        <br>
+        <div th:replace="fragments :: searchBar"/>
+
+        <br>
+
+        <form method="post" action="/new-currency">
+            <label for="currency">Change currency:</label>
+            <select id="currency" name="currencyName" >
+                <option th:each="currency : ${currencyList}" th:value="${currency.name}" th:text="${currency.name}"/>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+</body>
+</html>

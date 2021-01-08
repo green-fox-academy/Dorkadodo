@@ -3,30 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Webshop</title>
-    <link th:href="@{/styles.css}" type="text/css" rel="stylesheet">
+    <link href="/styles.css" type="text/css" rel="stylesheet">
 </head>
     <body>
-        <h1>My Shop</h1>
-            <hr>
-        <nav>
-            <button onclick="location.href='/webshop'">all</button>
-            <button onclick="location.href='/only-available'">only available</button>
-            <button onclick="location.href='/cheapest-first'">cheapest first</button>
-            <button onclick="location.href='/contains-nike'">contains nike</button>
-            <button onclick="location.href='/average-stock'">average stock</button>
-            <button onclick="location.href='/most-expensive-available'">most expensive available</button>
-        </nav>
+        <h1><a href="/webshop">My Shop</a></h1>
+        <hr>
+
+        <div th:replace="fragments :: filterButtons"/>
 
         <main>
             <br>
-
-            <form method="post" th:action="@{/search}">
-                <input type="text" id="searchword" name="searchword" placeholder="...something like nike">
-                <button type="submit">Search</button>
-            </form>
+            <div th:replace="fragments :: searchBar"/>
 
             <br>
-        <span th:text="${message}"/>
+            <span th:text="${message}"/>
         </main>
     </body>
 </html>

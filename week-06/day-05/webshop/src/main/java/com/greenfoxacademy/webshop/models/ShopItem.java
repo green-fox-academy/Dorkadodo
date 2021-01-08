@@ -4,10 +4,10 @@ public class ShopItem {
 
     private String name;
     private String description;
-    private Integer price;
+    private Long price;
     private Integer quantityOfStock;
 
-    public ShopItem(String name, String description, int price, int quantityOfStock) {
+    public ShopItem(String name, String description, Long price, Integer quantityOfStock) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -22,8 +22,12 @@ public class ShopItem {
         return description;
     }
 
-    public Integer getPrice() {
+    public Long getPrice() {
         return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public Integer getQuantityOfStock() {

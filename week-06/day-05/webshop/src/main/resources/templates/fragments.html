@@ -1,0 +1,17 @@
+<div th:fragment="filterButtons">
+    <nav>
+        <button onclick="location.href='/webshop'">all</button>
+        <button onclick="location.href='/only-available'">only available</button>
+        <button onclick="location.href='/cheapest-first'">cheapest first</button>
+        <button onclick="location.href='/contains-nike'">contains nike</button>
+        <button onclick="location.href='/average-stock'">average stock</button>
+        <button onclick="location.href='/most-expensive-available'">most expensive available</button>
+    </nav>
+</div>
+
+<div th:fragment="searchBar">
+    <form method="post" action="/search">
+        <input type="text" id="searchword" name="searchword" placeholder="...something like nike">
+        <button id="searchButton" type="submit">Search</button>
+    </form>
+</div>

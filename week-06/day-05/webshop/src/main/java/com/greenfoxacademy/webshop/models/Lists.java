@@ -22,7 +22,7 @@ public class Lists {
                 return new ShopItem(
                         arr[0],
                         arr[1],
-                        Integer.parseInt(arr[2]), Integer.parseInt(arr[3]));
+                        Long.parseLong(arr[2]), Integer.parseInt(arr[3]));
             }).collect(Collectors.toList());
             this.itemList.addAll(items);
         } catch (IOException e) {
@@ -35,6 +35,10 @@ public class Lists {
         return itemList;
     }
 
+    public void setItemList(List<ShopItem> itemList) {
+        this.itemList = itemList;
+    }
+
     public List<Currency> getCurrencyList(){
         currencyList = new ArrayList<>();
         try {
@@ -44,7 +48,7 @@ public class Lists {
                 return new Currency(
                         arr[0],
                         arr[1],
-                        Integer.parseInt(arr[2]));
+                        Double.parseDouble(arr[2]));
             }).collect(Collectors.toList());
             currencyList.addAll(currencies);
         } catch (IOException e) {

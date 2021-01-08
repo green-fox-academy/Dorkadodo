@@ -1,13 +1,11 @@
 package com.greenfoxacademy.webshop.models;
 
-import java.util.List;
-
 public class Currency {
     private String name;
     private String sign;
-    private double exchangeRate;
+    private Double exchangeRate;
 
-    public Currency(String name, String sign, double exchangeRate) {
+    public Currency(String name, String sign, Double exchangeRate) {
         this.name = name;
         this.sign = sign;
         this.exchangeRate = exchangeRate;
