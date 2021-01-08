@@ -3,32 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Webshop</title>
+    <link th:href="@{/styles.css}" type="text/css" rel="stylesheet">
 </head>
 <body>
     <h1>My Shop</h1>
 
     <hr>
-
-    <main>
+    <nav>
         <button onclick="location.href='/webshop'">all</button>
         <button onclick="location.href='/only-available'">only available</button>
         <button onclick="location.href='/cheapest-first'">cheapest first</button>
         <button onclick="location.href='/contains-nike'">contains nike</button>
         <button onclick="location.href='/average-stock'">average stock</button>
         <button onclick="location.href='/most-expensive-available'">most expensive available</button>
+    </nav>
+
+    <main>
+
 
         <table>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity of stock</th>
+                <th class="name">Name</th>
+                <th class="description">Description</th>
+                <th class="price">Price</th>
+                <th class="quantityOfStock">Quantity of stock</th>
             </tr>
             <tr th:each="item : ${itemList}">
-                <td th:text="${item.name}"/>
-                <td th:text="${item.description}"/>
-                <td th:text="${item.price}" />
-                <td th:text="${item.quantityOfStock}" />
+                <td class="name" th:text="${item.name}"/>
+                <td class="description" th:text="${item.description}"/>
+                <td class="price" th:text="${item.price}" />
+                <td class="quantityOfStock" th:text="${item.quantityOfStock}" />
             </tr>
         </table>
     </main>

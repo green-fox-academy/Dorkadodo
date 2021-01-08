@@ -1,8 +1,5 @@
 package com.greenfoxacademy.webshop.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ShopItem {
 
     private String name;
