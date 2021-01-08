@@ -23,16 +23,16 @@
 
         <table>
             <tr>
-                <th class="name">Name</th>
-                <th class="description">Description</th>
-                <th class="price">Price</th>
-                <th class="quantityOfStock">Quantity of stock</th>
+                <th id="name-h">Name</th>
+                <th id="description-h">Description</th>
+                <th id="price-h">Price</th>
+                <th id="quantityOfStock-h">Quantity of stock</th>
             </tr>
             <tr th:each="item : ${itemList}">
-                <td class="name" th:text="${item.name}"/>
-                <td class="description" th:text="${item.description}"/>
-                <td class="price" th:text="${item.price}" />
-                <td class="quantityOfStock" th:text="${item.quantityOfStock}" />
+                <td id="name" th:text="${item.name}"/>
+                <td id="description" th:text="${item.description}"/>
+                <td id="price" th:text="${item.price}" />
+                <td id="quantityOfStock" th:text="${item.quantityOfStock}" />
             </tr>
         </table>
     </main>

@@ -31,7 +31,10 @@ public class WebShopController {
 
     @GetMapping("/cheapest-first")
     public String cheapestFirst(Model model){
-        model.addAttribute("itemList", itemList.getItemList());
+        List<ShopItem> cheapestFirstItemList = itemList.getItemList().stream()
+                .sorted()
+                .collect(Collectors.toList());
+        model.addAttribute("itemList", cheapestFirstItemList);
         return "index";
     }
 
