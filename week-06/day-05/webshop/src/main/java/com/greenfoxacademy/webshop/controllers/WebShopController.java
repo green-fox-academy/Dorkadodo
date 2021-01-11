@@ -132,13 +132,14 @@ public class WebShopController {
 
     @PostMapping("/new-currency")
     public String newCurrency(@RequestParam String currencyName){
+        Currency previousCurrency = currentCurrency;
         Optional<Currency> optionalCurrentCurrency = itemList.getCurrencyList().stream()
         .filter(currency -> currency.getName().equals(currencyName))
                 .findFirst();
         if (optionalCurrentCurrency.isPresent()){
             currentCurrency = optionalCurrentCurrency.get();
             itemList.getItemList().stream()
-                    .forEach(item -> item.setPrice(Math.round(item.getPrice() * currentCurrency.getExchangeRate())));
+                    .forEach(item -> item.setPrice(Math.round(item.getPrice() / previousCurrency.getExchangeRate() * currentCurrency.getExchangeRate())));
         }
 
         return "redirect:/webshop";

@@ -1,12 +1,12 @@
 body {
     padding: 0 5% 0 5%;
     background-color: beige;
-    color: darkblue;
+    color: midnightblue;
     font-family: Helvetica, Arial, sans-serif;
 }
 
 h1, hr, h1 a, h1 a:visited, h1 a:hover  {
-    color: blue;
+    color: midnightblue;
     text-decoration: none;
 }
 
@@ -18,8 +18,8 @@ nav button {
     border-radius: 4px;
     margin: 3px 6px;
     font-weight: bold;
-    color: white;
-    background-color: midnightblue;
+    color: midnightblue;
+    background-color: #ff6400;
 }
 
 main button {
@@ -28,6 +28,8 @@ main button {
     border: 1px solid darkblue;
     border-radius: 4px;
     margin: 3px auto;
+    color: midnightblue;
+
 }
 
 #searchword, #searchButton {
@@ -35,24 +37,29 @@ main button {
     padding: 5px 10px;
 }
 
+
 #changeCurrency {
     float: right;
+}
+
+th {
+    background-color: darkorange;
+    color: midnightblue;
+    text-align: center;
+    border: 1px solid beige;
 }
 
 table {
     width: 100%;
     margin-top: 30px;
+    border: 0;
 }
 
 td, th {
     padding: 6px 3px;
 }
 
-th {
-    background-color: darkblue;
-    color: white;
-    text-align: center;
-}
+
 
 #name {
     width: 20%;

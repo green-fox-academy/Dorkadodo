@@ -20,6 +20,7 @@
             </tr>
         </table>
 
+
         <table>
             <tr>
                 <th id="name-h">Name</th>
@@ -30,9 +31,19 @@
             <tr th:each="item : ${itemList}">
                 <td id="name" th:text="${item.name}"/>
                 <td id="description" th:text="${item.description}"/>
-                <td id="price" th:text="${item.price} + ' ' + ${currentCurrencySign}" />
+                <td id="price" th:text="${item.price}"/>
                 <td id="quantityOfStock" th:text="${item.quantityOfStock}" />
             </tr>
+
+            <script th:inline="javascript">
+                let x = document.querySelectorAll("#price");
+                for (let i = 0; i < x.length; i++) {
+                    let num = Number(x[i].innerHTML)
+                        .toLocaleString('en');
+                    let currency = /*[[${currentCurrencySign}]]*/;
+                    x[i].innerHTML = num + " " + currency;
+                }
+            </script>
         </table>
 
     </main>
