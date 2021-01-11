@@ -3,6 +3,7 @@ package com.greenfoxacademy.webshop.controllers;
 import com.greenfoxacademy.webshop.models.Lists;
 import com.greenfoxacademy.webshop.models.ShopItem;
 import com.greenfoxacademy.webshop.models.Currency;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ public class WebShopController {
 
     Lists itemList = new Lists();
     Currency currentCurrency = new Currency("euro", "€", 1.00);
+    List<ShopItem> itemsToBuy = new ArrayList<>();
 
     @GetMapping("/")
     public String homepage() {
@@ -25,8 +27,10 @@ public class WebShopController {
 
     @GetMapping("/webshop")
     public String webshop(Model model) {
+        ShopItem itemToBuy = new ShopItem("x", "x", 0L, 0);
         model.addAttribute("itemList", itemList.getItemList());
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
@@ -143,5 +147,12 @@ public class WebShopController {
         }
 
         return "redirect:/webshop";
+    }
+
+    @PostMapping("/add-item-to-cart")
+    public String buySelectedItems(@RequestParam ShopItem itemToBuy, Model model){
+        itemsToBuy.add(itemToBuy);
+model.addAttribute("message", "To Buy");
+    return "message";
     }
 }
