@@ -21,14 +21,17 @@
                     <th id="price-h">Price</th>
                     <th id="quantityOfStock-h">Quantity of stock</th>
                 </tr>
-                <tr th:each="item : ${itemsToBuy}">
-                    <td id="name" th:text="${item.name}"/>
-                    <td id="description" th:text="${item.description}"/>
-                    <td id="price" th:text="${item.price}"/>
-                    <td id="quantityOfStock" th:text="${item.quantityOfStock}" />
-                    <td id="amountToBuy" th:text="${item.amountToBuy}"/>
-                </tr>
+                <form method="post" action="/get-item-amount" th:object="${itemToBuy}">
+                <tr >
+                    <td id="name" th:text="*{name}"/>
+                    <td id="description" th:text="*{description}"/>
+                    <td id="price" th:text="*{price}"/>
+                    <td id="quantityOfStock" th:text="*{quantityOfStock}" />
+                    <td><input type="number" min="0" th:max="*{quantityOfStock}" th:field="*{amountToBuy}"/>
+                    <button type="submit">Buy</button> </td>
 
+                </tr>
+        </form>
                 <script th:inline="javascript">
                     let x = document.querySelectorAll("#price");
                     for (let i = 0; i < x.length; i++) {

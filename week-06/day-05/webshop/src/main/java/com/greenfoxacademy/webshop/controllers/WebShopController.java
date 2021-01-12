@@ -3,7 +3,6 @@ package com.greenfoxacademy.webshop.controllers;
 import com.greenfoxacademy.webshop.models.Lists;
 import com.greenfoxacademy.webshop.models.ShopItem;
 import com.greenfoxacademy.webshop.models.Currency;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,6 @@ public class WebShopController {
         ShopItem itemToBuy = new ShopItem("x", "x", 0L, 0);
         model.addAttribute("itemList", itemList.getItemList());
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
-        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
@@ -150,9 +148,22 @@ public class WebShopController {
     }
 
     @PostMapping("/add-item-to-cart")
-    public String buySelectedItems(@RequestParam ShopItem itemToBuy, Model model){
-        itemsToBuy.add(itemToBuy);
-model.addAttribute("message", "To Buy");
-    return "message";
+    public String buySelectedItems(@RequestParam Long itemID, Model model){
+        Optional<ShopItem> optionalShopItem = itemList.getItemList().stream()
+                .filter(item -> item.getID() == itemID)
+                .findFirst();
+        if (optionalShopItem.isEmpty()){
+            model.addAttribute("message", "Sorry, we couldn't find the selected item.");
+            return "message";
+        }
+        ShopItem itemToBuy = optionalShopItem.get();
+        model.addAttribute("itemToBuy", itemToBuy);
+        return "buy-item";
+    }
+
+    @PostMapping("/get-item-amount")
+    public String getItemAmount (@RequestParam ShopItem itemToBuy, Model model){
+        model.addAttribute("message", itemToBuy.getID());
+        return "message";
     }
 }

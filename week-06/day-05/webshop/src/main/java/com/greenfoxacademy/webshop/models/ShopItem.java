@@ -50,6 +50,22 @@ public class ShopItem {
         return ID;
     }
 
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setQuantityOfStock(Integer quantityOfStock) {
+        this.quantityOfStock = quantityOfStock;
+    }
+
     public void setAmountToBuy(Integer amountToBuy) {
         this.amountToBuy = amountToBuy;
     }
