@@ -21,7 +21,7 @@
                     <th id="price-h">Price</th>
                     <th id="quantityOfStock-h">Quantity of stock</th>
                 </tr>
-                <form method="post" action="/get-item-amount" th:object="${itemToBuy}">
+                <form method="post" th:action="@{/get-item-amount(itemID=${itemToBuy.ID})}" th:object="${itemToBuy}">
                 <tr >
                     <td id="name" th:text="*{name}"/>
                     <td id="description" th:text="*{description}"/>
