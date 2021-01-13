@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Greenfox Class</title>
+</head>
+<body>
+<header th:text="'The number of current students: ' + ${studentCount}"/>
+
+<br>
+
+<form method="get" action="/gfa/list">
+    <button type="submit">List all Students</button>
+</form>
+
+<table>
+    <tr th:each="student : ${studentList}">
+        <td th:text="${student}"/>
+    </tr>
+</table>
+
+<br>
+<hr>
+<br>
+
+<form method="get" action="/gfa/add">
+    <button type="submit">Add new student</button>
+</form>
+
+<br>
+<hr>
+<br>
+
+<form method="get" action="/gfa/check">
+    <label for="nameCheck">Check if a person is already a student or not</label>
+    <input id="nameCheck" name="nameCheck" type="text">
+    <button type="submit">Check member</button>
+</form>
+
+</body>
+</html>
