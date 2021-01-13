@@ -7,13 +7,13 @@ public class ShopItem {
     private Long ID;
     private String name;
     private String description;
-    private Long price;
+    private Double price;
     private Integer quantityOfStock;
     private Integer amountToBuy;
 
-    AtomicLong atomicLong = new AtomicLong(1);
+    private static AtomicLong atomicLong = new AtomicLong(1);
 
-    public ShopItem(String name, String description, Long price, Integer quantityOfStock) {
+    public ShopItem(String name, String description, Double price, Integer quantityOfStock) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -30,11 +30,11 @@ public class ShopItem {
         return description;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

@@ -22,7 +22,7 @@ public class Lists {
                 return new ShopItem(
                         arr[0],
                         arr[1],
-                        Long.parseLong(arr[2]), Integer.parseInt(arr[3]));
+                        Double.parseDouble(arr[2]), Integer.parseInt(arr[3]));
             }).collect(Collectors.toList());
             this.itemList.addAll(items);
         } catch (IOException e) {

@@ -1,0 +1,130 @@
+mysql> SELECT title FROM Movie WHERE director = "Steven Spielberg";
++-------------------------+
+| title                   |
++-------------------------+
+| E.T.                    |
+| Raiders of the Lost Ark |
++-------------------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT DISTINCT year 
+-> FROM Movie inner join Rating on Movie.mID = Rating.mID 
+-> WHERE 4 <= stars 
+-> ORDER BY Year ASC;
++------+
+| year |
++------+
+| 1937 |
+| 1939 |
+| 1981 |
+| 2009 |
++------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Title 
+-> FROM Movie left join Rating on Movie.mID = Rating.mID 
+-> WHERE stars is null;
++-----------+
+| Title     |
++-----------+
+| Star Wars |
+| Titanic   |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT name 
+-> FROM Rating right join Reviewer on Rating.rID = Reviewer.rID 
+-> WHERE ratingDate is null;
++---------------+
+| name          |
++---------------+
+| Daniel Lewis  |
+| Chris Jackson |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT name, title, stars, ratingDate 
+-> FROM Rating inner join Reviewer on Rating.rID = Reviewer.rID inner join Movie on Rating.mID = Movie.mID
+-> ORDER BY name, title, stars;
++------------------+-------------------------+-------+------------+
+| name             | title                   | stars | ratingDate |
++------------------+-------------------------+-------+------------+
+| Ashley White     | E.T.                    |     3 | 2011-01-02 |
+| Brittany Harris  | Raiders of the Lost Ark |     2 | 2011-01-30 |
+| Brittany Harris  | Raiders of the Lost Ark |     4 | 2011-01-12 |
+| Brittany Harris  | The Sound of Music      |     2 | 2011-01-20 |
+| Chris Jackson    | E.T.                    |     2 | 2011-01-22 |
+| Chris Jackson    | Raiders of the Lost Ark |     4 | NULL       |
+| Chris Jackson    | The Sound of Music      |     3 | 2011-01-27 |
+| Daniel Lewis     | Snow White              |     4 | NULL       |
+| Elizabeth Thomas | Avatar                  |     3 | 2011-01-15 |
+| Elizabeth Thomas | Snow White              |     5 | 2011-01-19 |
+| James Cameron    | Avatar                  |     5 | 2011-01-20 |
+| Mike Anderson    | Gone with the Wind      |     3 | 2011-01-09 |
+| Sarah Martinez   | Gone with the Wind      |     2 | 2011-01-22 |
+| Sarah Martinez   | Gone with the Wind      |     4 | 2011-01-27 |
++------------------+-------------------------+-------+------------+
+14 rows in set (0.00 sec)
+
+mysql> Select name, title 
+-> FROM Movie m inner join Rating ra1 on m.mID=ra1.mID inner join Rating ra2 on ra1.rID = ra2.rID inner join Reviewer re on ra1.rID = re.rID 
+-> WHERE ra1.rID = ra2.rID 
+-> AND ra1.mID = ra2.mID 
+-> AND ra1.ratingDate < ra2.ratingDate 
+-> AND ra1.stars < ra2.stars;
++----------------+--------------------+
+| name           | title              |
++----------------+--------------------+
+| Sarah Martinez | Gone with the Wind |
++----------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT title, max(r1.stars) as max 
+-> FROM Movie m inner join Rating r1 on m.mID=r1.mID inner join Rating r2 on r1.rID=r2.rID 
+-> GROUP BY Title 
+-> ORDER BY Title;
++-------------------------+------+
+| title                   | max  |
++-------------------------+------+
+| Avatar                  |    5 |
+| E.T.                    |    3 |
+| Gone with the Wind      |    4 |
+| Raiders of the Lost Ark |    4 |
+| Snow White              |    5 |
+| The Sound of Music      |    3 |
++-------------------------+------+
+6 rows in set (0.01 sec)
+
+mysql> SELECT title, max(r1.stars)-min(r1.stars) as rating_spread 
+-> FROM Movie m inner join Rating r1 on m.mID=r1.mID inner join Rating r2 on r1.rID=r2.rID 
+-> GROUP BY Title 
+-> ORDER BY rating_spread DESC, Title;
++-------------------------+---------------+
+| title                   | rating_spread |
++-------------------------+---------------+
+| Avatar                  |             2 |
+| Gone with the Wind      |             2 |
+| Raiders of the Lost Ark |             2 |
+| E.T.                    |             1 |
+| Snow White              |             1 |
+| The Sound of Music      |             1 |
++-------------------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT avg(avg_movie_first)-avg(avg_movie_second) as difference 
+-> FROM (SELECT Title, avg(stars) as avg_movie_first 
+->  FROM Movie m inner join Rating r on m.mID=r.mID 
+->  WHERE year < 1980 
+->  GROUP BY Title) as avg_first, 
+->  (SELECT Title, avg(stars) as avg_movie_second 
+->  FROM Movie m inner join Rating r on m.mID=r.mID 
+->  WHERE year >= 1980 
+->  GROUP BY Title) as avg_second;
++------------+
+| difference |
++------------+
+| 0.05556667 |
++------------+
+1 row in set (0.00 sec)
+
+mysql>

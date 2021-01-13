@@ -27,14 +27,18 @@
                     <th id="description-h">Description</th>
                     <th id="price-h">Price</th>
                     <th id="quantityOfStock-h">Quantity of stock</th>
+                    <th id="amountToBuy-h">Amount to buy</th>
                 </tr>
                 <tr th:each="item : ${itemList}">
-                    <form action="/add-item-to-cart(itemID=${item.id})" method="post">
+
+                    <form method="post" th:action="@{/get-item-amount(itemID=${item.ID})}" th:object="${itemToBuy}">
+
                     <td id="name" name="name" th:text="${item.name}" type="text"/>
                     <td id="description" name="description" th:text="${item.description}" type="text"/>
                     <td id="price" name="price" th:text="${item.price}" type="number"/>
                     <td id="quantityOfStock" name="quantityOfStock" th:text="${item.quantityOfStock}" type="number"/>
-                    <td><button type="submit">Buy</button></td>
+                    <td><input type="number" min="0" th:max="${item.quantityOfStock}" th:field="*{amountToBuy}"/>
+                        <button type="submit">Buy</button></td>
 
                     </form>
                 </tr>

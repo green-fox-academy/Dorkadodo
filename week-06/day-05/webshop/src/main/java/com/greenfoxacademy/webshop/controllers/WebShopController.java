@@ -17,7 +17,7 @@ public class WebShopController {
 
     Lists itemList = new Lists();
     Currency currentCurrency = new Currency("euro", "€", 1.00);
-    List<ShopItem> itemsToBuy = new ArrayList<>();
+    List<ShopItem> contentOfCart = new ArrayList<>();
 
     @GetMapping("/")
     public String homepage() {
@@ -26,9 +26,10 @@ public class WebShopController {
 
     @GetMapping("/webshop")
     public String webshop(Model model) {
-        ShopItem itemToBuy = new ShopItem("x", "x", 0L, 0);
+        ShopItem itemToBuy = new ShopItem("x", "x", 0.00, 0);
         model.addAttribute("itemList", itemList.getItemList());
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
@@ -38,12 +39,13 @@ public class WebShopController {
             model.addAttribute("message", "Sorry, no items available");
             return "message";
         }
-
+        ShopItem itemToBuy = new ShopItem("x", "x", 0.00, 0);
         List<ShopItem> availableItemList = itemList.getItemList().stream()
                 .filter(item -> item.getQuantityOfStock() > 0)
                 .collect(Collectors.toList());
         model.addAttribute("itemList", availableItemList);
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
@@ -53,11 +55,13 @@ public class WebShopController {
             model.addAttribute("message", "Sorry, no items available");
             return "message";
         }
+        ShopItem itemToBuy = new ShopItem("x", "x", 0.00, 0);
         List<ShopItem> cheapestFirstItemList = itemList.getItemList().stream()
-                .sorted(Comparator.comparingLong(ShopItem::getPrice))
+                .sorted(Comparator.comparingDouble(ShopItem::getPrice))
                 .collect(Collectors.toList());
         model.addAttribute("itemList", cheapestFirstItemList);
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
@@ -67,11 +71,13 @@ public class WebShopController {
             model.addAttribute("message", "Sorry, no Nike items available");
             return "message";
         }
+        ShopItem itemToBuy = new ShopItem("x", "x", 0.00, 0);
         List<ShopItem> containsNike = itemList.getItemList().stream()
                 .filter(item -> item.getName().contains("Nike") || item.getDescription().contains("Nike"))
                 .collect(Collectors.toList());
         model.addAttribute("itemList", containsNike);
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
@@ -100,11 +106,13 @@ public class WebShopController {
         Optional<ShopItem> optionalMostExpensive = itemList.getItemList().stream()
                 .max((item1, item2) -> item1.getPrice().compareTo(item2.getPrice()));
         if (optionalMostExpensive.isPresent()) {
+            ShopItem itemToBuy = new ShopItem("x", "x", 0.00, 0);
             List<ShopItem> mostExpensive = itemList.getItemList().stream()
                     .filter(item -> item.getPrice().equals(optionalMostExpensive.get().getPrice()))
                     .collect(Collectors.toList());
             model.addAttribute("itemList", mostExpensive);
             model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+            model.addAttribute("itemToBuy", itemToBuy);
             return "index";
         } else {
             model.addAttribute("message", "No items found");
@@ -121,49 +129,72 @@ public class WebShopController {
             model.addAttribute("message", "No items found for " + searchword.toUpperCase());
             return "message";
         }
+        ShopItem itemToBuy = new ShopItem("x", "x", 0.00, 0);
         model.addAttribute("itemList", searchResult);
         model.addAttribute("currentCurrencySign", currentCurrency.getSign());
+        model.addAttribute("itemToBuy", itemToBuy);
         return "index";
     }
 
     @GetMapping("/change-currency")
-    public String changeCurrency(Model model){
+    public String changeCurrency(Model model) {
         model.addAttribute("currencyList", itemList.getCurrencyList());
         return "changeCurrency";
     }
 
     @PostMapping("/new-currency")
-    public String newCurrency(@RequestParam String currencyName){
+    public String newCurrency(@RequestParam String currencyName) {
         Currency previousCurrency = currentCurrency;
         Optional<Currency> optionalCurrentCurrency = itemList.getCurrencyList().stream()
-        .filter(currency -> currency.getName().equals(currencyName))
+                .filter(currency -> currency.getName().equals(currencyName))
                 .findFirst();
-        if (optionalCurrentCurrency.isPresent()){
+        if (optionalCurrentCurrency.isPresent()) {
             currentCurrency = optionalCurrentCurrency.get();
             itemList.getItemList().stream()
-                    .forEach(item -> item.setPrice(Math.round(item.getPrice() / previousCurrency.getExchangeRate() * currentCurrency.getExchangeRate())));
+                    .forEach(item -> item.setPrice(item.getPrice() / previousCurrency.getExchangeRate() * currentCurrency.getExchangeRate()));
         }
-
         return "redirect:/webshop";
     }
 
     @PostMapping("/add-item-to-cart")
-    public String buySelectedItems(@RequestParam Long itemID, Model model){
+    public String buySelectedItems(@RequestParam Long itemID, Model model) {
         Optional<ShopItem> optionalShopItem = itemList.getItemList().stream()
                 .filter(item -> item.getID() == itemID)
                 .findFirst();
-        if (optionalShopItem.isEmpty()){
+        if (optionalShopItem.isEmpty()) {
             model.addAttribute("message", "Sorry, we couldn't find the selected item.");
             return "message";
         }
         ShopItem itemToBuy = optionalShopItem.get();
         model.addAttribute("itemToBuy", itemToBuy);
-        return "buy-item";
+        return "contentOfCart";
     }
 
     @PostMapping("/get-item-amount")
-    public String getItemAmount (@RequestParam ShopItem itemToBuy, Model model){
-        model.addAttribute("message", itemToBuy.getID());
-        return "message";
+    public String getItemAmount(@RequestParam Long itemID, Integer amountToBuy, Model model) {
+        Optional<ShopItem> optionalShopItem = itemList.getItemList().stream()
+                .filter(item -> item.getID() == itemID)
+                .findFirst();
+        if (optionalShopItem.isEmpty() || (amountToBuy <= 0)) {
+            model.addAttribute("message", "Sorry, we don't have the selected item.");
+            return "message";
+        }
+        ShopItem itemToBuy = optionalShopItem.get();
+        addItemToCart(itemToBuy, amountToBuy);
+        model.addAttribute("contentOfCart", contentOfCart);
+        return "contentOfCart";
+    }
+
+    private void addItemToCart(ShopItem newItem, Integer amountToBuy) {
+        newItem.setAmountToBuy(amountToBuy);
+        contentOfCart.stream()
+                .filter(item -> item.getID() == newItem.getID())
+                .forEach(item -> item.setAmountToBuy(amountToBuy));
+        if (!(contentOfCart.contains(newItem))){
+            contentOfCart.add(newItem);
+        }
+        contentOfCart = contentOfCart.stream()
+                .filter(item -> item.getAmountToBuy() > 0)
+                .collect(Collectors.toList());
     }
 }
