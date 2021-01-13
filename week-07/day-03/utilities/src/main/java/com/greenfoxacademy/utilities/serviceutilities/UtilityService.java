@@ -24,6 +24,20 @@ public class UtilityService {
         return colors.get(random.nextInt(colors.size()));
     }
 
+    public Boolean validateEmail(String email){
+        boolean containsAt = false;
+        for (int i = 0; i < email.length(); i++) {
+            if (email.charAt(i) == '@'){
+                containsAt = true;
+            }
+            if (containsAt){
+                if (email.charAt(i)== '.'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public String caesar(String text, int number) {
         if (number < 0) {

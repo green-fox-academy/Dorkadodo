@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Useful Utilities</title>
+    </head>
+    <body>
+        <form method="post" action="/useful/colored">
+            <button type="submit">Random colored Page</button>
+        </form>
 
-</body>
+        <hr>
+        <br>
+
+        <form method="get" action="/useful/email">
+            <label for="email"/>
+            <input type="text" id="email" name="email"/>
+            <a href="/useful/email?email=is@this.valid">example for e-mail validation</a>
+            <button type="submit">Check validity</button>
+        </form>
+
+        <hr>
+        <br>
+
+        <form method="post" action="/useful/caesar-encoder">
+            <label for="textToEncode">Text to Encode: </label>
+            <input type="text" id="textToEncode" name="textToEncode">
+            <label for="numberForEncode">The number to encode the text with:</label>
+            <input type="number" id="numberForEncode" name="numberForEncode" min="0">
+            <button type="submit">Encode</button>
+        </form>
+        <br>
+        <form method="post" action="/useful/caesar-decoder">
+            <label for="textToDecode">Text to Decode: </label>
+            <input type="text" id="textToDecode" name="textToDecode">
+            <label for="numberForDecode">The number to decode the text with:</label>
+            <input type="number" id="numberForDecode" name="numberForDecode" min="0">
+            <button type="submit">Decode</button>
+        </form>
+
+    </body>
 </html>
