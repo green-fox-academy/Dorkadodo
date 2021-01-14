@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+
+}
+
+nav {
+    margin: 0 0;
+    padding: 45px;
+    border: 0px;
+    background-color: beige;
+    color: seagreen;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+nav a {
+        float: right;
+        margin: 0 10px;
+        padding: 5px 10px;
+        text-transform: uppercase;
+        background-color: seagreen;
+        color: white;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: normal;
+        text-decoration: none;
+}
+
+#introduction {
+    margin: 30px auto;
+}
+
+#store {
+    margin: 30px 5%;
+}
+
+#store form {
+    padding: 5px;
+}

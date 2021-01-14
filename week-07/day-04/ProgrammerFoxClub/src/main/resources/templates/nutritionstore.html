@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="styles.css" type="text/css" rel="stylesheet">
+    <title>Nutrition Store</title>
+</head>
+<body>
+
+<div th:replace="fragments :: navButtons"/>
+
+<div id="store">
+
+<form method="post" action="/nutrition-store/food">
+    <label for="food">Food</label>
+    <select id="food" name="food">
+        <option th:each="food : ${listOfFood}" th:text="${food}"/>
+    </select>
+    <button type="submit">Buy</button>
+</form>
+
+<form method="post" action="/nutrition-store/drink">
+    <label for="drink">Drink</label>
+    <select id="drink" name="drink">
+        <option th:each="drink : ${listOfDrink}" th:text="${drink}"/>
+    </select>
+    <button type="submit">Buy</button>
+</form>
+
+</div>
+
+</body>
+</html>

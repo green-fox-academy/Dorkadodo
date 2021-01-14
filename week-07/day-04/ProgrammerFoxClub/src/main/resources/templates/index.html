@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="styles.css" type="text/css" rel="stylesheet">
+    <title>Programmer Fox Club</title>
+</head>
+<body>
+
+    <div th:replace="fragments :: navButtons"/>
+
+    <div id="introduction">
+        <img src="/greenfox.png" GreenFox>
+        <p th:text="'This is ' + ${name} + '. Currently living on '+ ${food} + ' and ' + ${drink} + '. He knows ' + ${numberOfTricks} + ' trick.'"/>
+        <br>
+    </div>
+
+    <div id="tricks">
+        <h1>Known tricks</h1>
+        <ul th:each="trick : ${tricks}">
+            <li th:text="${trick}"/>
+        </ul>
+    </div>
+
+</body>
+</html>
