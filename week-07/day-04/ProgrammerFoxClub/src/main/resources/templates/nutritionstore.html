@@ -7,27 +7,27 @@
 </head>
 <body>
 
-<div th:replace="fragments :: navButtons"/>
+    <div th:replace="fragments :: navButtons"/>
 
-<div id="store">
+    <main id="store">
 
-<form method="post" action="/nutrition-store/food">
-    <label for="food">Food</label>
-    <select id="food" name="food">
-        <option th:each="food : ${listOfFood}" th:text="${food}"/>
-    </select>
-    <button type="submit">Buy</button>
-</form>
+        <form method="post" action="/nutrition-store/food">
+            <label for="food">Food</label>
+            <select id="food" name="food">
+                <option th:each="food : ${listOfFood}" th:text="${food}"/>
+            </select>
+            <button type="submit">Buy</button>
+        </form>
 
-<form method="post" action="/nutrition-store/drink">
-    <label for="drink">Drink</label>
-    <select id="drink" name="drink">
-        <option th:each="drink : ${listOfDrink}" th:text="${drink}"/>
-    </select>
-    <button type="submit">Buy</button>
-</form>
+        <form method="post" action="/nutrition-store/drink">
+            <label for="drink">Drink</label>
+            <select id="drink" name="drink">
+                <option th:each="drink : ${listOfDrink}" th:text="${drink}"/>
+            </select>
+            <button type="submit">Buy</button>
+        </form>
 
-</div>
+    </main>
 
 </body>
 </html>

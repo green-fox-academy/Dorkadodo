@@ -8,19 +8,19 @@
 <body>
 
     <div th:replace="fragments :: navButtons"/>
+    <main>
+        <div id="introduction">
+            <img src="/greenfox.png" GreenFox>
+            <p th:text="'This is ' + ${name} + '. Currently living on '+ ${food} + ' and ' + ${drink} + '. He knows ' + ${numberOfTricks} + ' trick.'"/>
+            <br>
+        </div>
 
-    <div id="introduction">
-        <img src="/greenfox.png" GreenFox>
-        <p th:text="'This is ' + ${name} + '. Currently living on '+ ${food} + ' and ' + ${drink} + '. He knows ' + ${numberOfTricks} + ' trick.'"/>
-        <br>
-    </div>
-
-    <div id="tricks">
-        <h1>Known tricks</h1>
-        <ul th:each="trick : ${tricks}">
-            <li th:text="${trick}"/>
-        </ul>
-    </div>
-
+        <div id="tricks">
+            <h1>Known tricks</h1>
+            <ul th:each="trick : ${tricks}">
+                <li th:text="${trick}"/>
+            </ul>
+        </div>
+    </main>
 </body>
 </html>

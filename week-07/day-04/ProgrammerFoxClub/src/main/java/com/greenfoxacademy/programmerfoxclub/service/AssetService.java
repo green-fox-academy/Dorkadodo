@@ -49,22 +49,49 @@ public class AssetService {
         return drinksNotYetAdded;
     }
 
-    public void addNewFoodForFox(String foodName) {
+    public List<TrickType> tricksNotYetAdded(){
+        List<TrickType> tricksNotYetAdded = Arrays.asList(TrickType.values()).stream()
+                    .filter(trick -> !(foxService.getListOfTricksOfCurrentFox()
+                            .stream()
+                            .map(trick1 -> trick1.getName())
+                            .collect(Collectors.toList())
+                            .contains(trick)))
+                    .collect(Collectors.toList());
+        return tricksNotYetAdded;
+    }
+
+    public void addNewFoodForFox(String foodName) throws LoginUserException{
         foxService.getCurrentFox().addNewFood(FoodType.valueOf(foodName));
     }
 
-    public void addNewDrinkForFox(String drinkName) {
+    public void addNewDrinkForFox(String drinkName) throws LoginUserException{
         foxService.getCurrentFox().addNewDrink(DrinkType.valueOf(drinkName));
     }
 
-    public void addNewTrickForFox(String trickName) {
+    public void addNewTrickForFox(String trickName) throws LoginUserException{
+        foxService.getCurrentFox().learnNewTrick(new Trick (getTrickTypeFromDescription(trickName)));
+    }
+
+    private TrickType getTrickTypeFromDescription (String description){
         Trick trick = new Trick();
         Optional<TrickType> optionalTrick = Arrays.stream(TrickType.values())
-                .filter(trick1 -> trick.describeTrick(trick1).equals(trickName))
+                .filter(trick1 -> trick.describeTrick(trick1).equals(description))
                 .findFirst();
         if(optionalTrick.isEmpty()){
-            return;
+            return null;
         }
-        foxService.getCurrentFox().learnNewTrick(new Trick (optionalTrick.get()));
+        return optionalTrick.get();
+    }
+
+    private String getDescriptionFromTrickType (TrickType type){
+        Trick trick = new Trick();
+        return trick.describeTrick(type);
+    }
+
+    public List<String> getDescriptionOfTricksNotYetAdded (){
+        List<String> descriptionOfTricksNotYetAdded = tricksNotYetAdded().stream()
+                .map(trickType -> getDescriptionFromTrickType(trickType))
+                .collect(Collectors.toList());
+        return descriptionOfTricksNotYetAdded;
     }
 }

@@ -7,19 +7,17 @@
 </head>
 <body>
 
-<div th:replace="fragments :: navButtons"/>
+    <div th:replace="fragments :: navButtons"/>
 
-<div id="store">
-
-    <form method="post" action="/trick-center/learn-trick">
-        <label for="trickName">Trick to learn</label>
-        <select id="trickName" name="trickName">
-            <option th:each="trickName : ${listOfTricks}" th:text="${trickName}"/>
-        </select>
-        <button type="submit">Learn Trick</button>
-    </form>
-
-</div>
+    <main id="store">
+        <form method="post" action="/trick-center/learn-trick">
+            <label for="trickName">Trick to learn</label>
+            <select id="trickName" name="trickName">
+                <option th:each="trickName : ${listOfTricks}" th:text="${trickName}"/>
+            </select>
+            <button type="submit">Learn Trick</button>
+        </form>
+    </main>
 
 </body>
 </html>

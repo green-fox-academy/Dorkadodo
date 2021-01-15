@@ -39,7 +39,10 @@ public class FoxService {
         listOfFox.add(fox);
     }
 
-    public Fox getCurrentFox() {
+    public Fox getCurrentFox() throws LoginUserException {
+        if (currentFox == null) {
+            throw new LoginUserException();
+        }
         return currentFox;
     }
 
