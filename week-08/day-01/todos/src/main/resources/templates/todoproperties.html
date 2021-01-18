@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Properties</title>
+        <link href="styles.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+    <div th:replace="fragments :: navBar"/>
+
+        <h1>Properties:</h1>
+
+        <p th:text="'Todo: ' + ${todo.title}"/>
+        <p th:text="${todo.urgent} ? 'URGENT' : 'NOT URGENT'"/>
+        <p th:text="${todo.done}? 'FINISHED' : 'UNFINISHED'"/>
+
+        <a th:href="'/edit-todo/' + ${todo.id} + '/edit'">edit</a>
+    </body>
+</html>

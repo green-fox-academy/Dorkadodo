@@ -60,4 +60,10 @@ public class TodoController {
         todoRepository.save(todo);
         return "redirect:/list";
     }
+
+    @GetMapping ("/todo-properties")
+    public String propertiedOfTodo (@RequestParam Long id, Model model){
+        model.addAttribute("todo", todoRepository.findById(id).get());
+        return "todoproperties";
+    }
 }
