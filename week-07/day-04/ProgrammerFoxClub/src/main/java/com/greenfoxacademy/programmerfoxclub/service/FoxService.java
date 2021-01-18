@@ -1,6 +1,7 @@
 package com.greenfoxacademy.programmerfoxclub.service;
 
 import com.greenfoxacademy.programmerfoxclub.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -8,7 +9,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class FoxService {
+
     private List<Fox> listOfFox;
+
+    @Autowired
+    AssetService assetService;
 
     private static Fox currentFox;
 
@@ -22,10 +27,6 @@ public class FoxService {
         fox.addNewFood(FoodType.TOAST);
         fox.addNewDrink(DrinkType.BEER);
         listOfFox.add(fox);
-    }
-
-    public List<Fox> getListOfFox() {
-        return listOfFox;
     }
 
     public List<String> getListOfNameOfFox(){
@@ -101,6 +102,7 @@ public class FoxService {
         attributesOfCurrentFox.put("food", getStringOfFoodOfCurrentFox());
         attributesOfCurrentFox.put("drink", getStringOfDrinkOfCurrentFox());
         attributesOfCurrentFox.put("numberOfTricks", currentFox.getListOfTrick().size());
+        attributesOfCurrentFox.put("picturePath", assetService.getPicturePathFromColor(currentFox.getColor()));
         return attributesOfCurrentFox;
     }
 

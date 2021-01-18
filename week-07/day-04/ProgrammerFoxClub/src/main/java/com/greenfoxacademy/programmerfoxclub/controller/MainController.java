@@ -94,4 +94,16 @@ public class MainController {
         assetService.addNewTrickForFox(trickName);
         return "redirect:/information";
     }
+
+    @GetMapping ("/costum-change")
+    public  String getNewCostum (Model model){
+        model.addAttribute("listOfColors", assetService.costums());
+        return "costumChange";
+    }
+
+    @PostMapping ("/costum-change")
+    public String changeCostum(String costum) throws LoginUserException{
+        assetService.changeColorOfFox(costum);
+        return "redirect:/information";
+    }
 }

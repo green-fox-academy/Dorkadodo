@@ -10,7 +10,7 @@
     <div th:replace="fragments :: navButtons"/>
     <main>
         <div id="introduction">
-            <img src="/greenfox.png" GreenFox>
+            <img th:src="@{${picturePath}}" Fox>
             <p th:text="'This is ' + ${name} + '. Currently living on '+ ${food} + ' and ' + ${drink} + '. He knows ' + ${numberOfTricks} + ' trick.'"/>
             <br>
         </div>

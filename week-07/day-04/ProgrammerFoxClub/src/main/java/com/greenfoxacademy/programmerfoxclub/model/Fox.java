@@ -8,12 +8,16 @@ public class Fox {
     private List<Trick> listOfTrick;
     private List<FoodType> listOfFood;
     private List<DrinkType> listOfDrink;
+    private ColorType color;
+
+
 
     public Fox(String name) {
         this.name = name;
         listOfTrick = new ArrayList<>();
         listOfFood = new ArrayList<>();
         listOfDrink = new ArrayList<>();
+        color = ColorType.GREEN;
     }
 
     public String getName() {
@@ -22,6 +26,14 @@ public class Fox {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ColorType getColor() {
+        return color;
+    }
+
+    public void setColor(ColorType color) {
+        this.color = color;
     }
 
     public List<Trick> getListOfTrick() {

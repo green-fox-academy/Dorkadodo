@@ -1,13 +1,11 @@
 package com.greenfoxacademy.programmerfoxclub.service;
 
-import com.greenfoxacademy.programmerfoxclub.model.DrinkType;
-import com.greenfoxacademy.programmerfoxclub.model.FoodType;
-import com.greenfoxacademy.programmerfoxclub.model.Trick;
-import com.greenfoxacademy.programmerfoxclub.model.TrickType;
+import com.greenfoxacademy.programmerfoxclub.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +16,8 @@ public class AssetService {
 
     @Autowired
     FoxService foxService;
+
+    Trick trick;
 
     public List<FoodType> listOfFood() {
         return Arrays.asList(FoodType.values());
@@ -73,7 +73,7 @@ public class AssetService {
     }
 
     private TrickType getTrickTypeFromDescription (String description){
-        Trick trick = new Trick();
+        trick = new Trick();
         Optional<TrickType> optionalTrick = Arrays.stream(TrickType.values())
                 .filter(trick1 -> trick.describeTrick(trick1).equals(description))
                 .findFirst();
@@ -84,7 +84,7 @@ public class AssetService {
     }
 
     private String getDescriptionFromTrickType (TrickType type){
-        Trick trick = new Trick();
+        trick = new Trick();
         return trick.describeTrick(type);
     }
 
@@ -93,5 +93,29 @@ public class AssetService {
                 .map(trickType -> getDescriptionFromTrickType(trickType))
                 .collect(Collectors.toList());
         return descriptionOfTricksNotYetAdded;
+    }
+
+    public String getPicturePathFromColor (ColorType colorType){
+        return getPaths().get(colorType);
+    }
+
+    private HashMap<ColorType, String> getPaths (){
+        HashMap<ColorType, String> listOfPictures = new HashMap<>();
+        listOfPictures.put(ColorType.GREEN, "/greenfox.png");
+        listOfPictures.put(ColorType.BLUE, "/bluefox.png");
+        listOfPictures.put(ColorType.PINK, "/pinkfox.png");
+        listOfPictures.put(ColorType.YELLOW, "/yellowfox.png");
+        return listOfPictures;
+    }
+
+    public List<String> costums (){
+        List<String> costums = Arrays.stream(ColorType.values())
+                .map(colorType -> colorType.toString())
+                .collect(Collectors.toList());
+        return costums;
+    }
+
+    public void changeColorOfFox (String color) throws LoginUserException{
+        foxService.getCurrentFox().setColor(ColorType.valueOf(color));
     }
 }
