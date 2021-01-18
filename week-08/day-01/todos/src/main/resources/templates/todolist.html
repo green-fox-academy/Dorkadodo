@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Todo List</title>
+    <link href="styles.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <h1>Todos for today:</h1>
 <table>
+    <tr>
+        <th>id</th>
+        <th>action</th>
+        <th>urgent</th>
+        <th>done</th>
+    </tr>
     <tr th:each="todo:${todoList}">
         <td th:text="${todo.id}"/>
         <td th:text="${todo.title}"/>

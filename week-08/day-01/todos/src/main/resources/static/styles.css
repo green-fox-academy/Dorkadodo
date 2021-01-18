@@ -1,0 +1,7 @@
+table th {
+    text-transform: uppercase;
+}
+
+table td {
+    border: 1px solid black;
+}

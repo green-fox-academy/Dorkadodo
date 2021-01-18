@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.persistence.GeneratedValue;
+
 @Controller
 public class TodoController {
 
@@ -26,5 +28,11 @@ public class TodoController {
     @GetMapping ("/")
     public String root (){
         return "redirect:/list";
+    }
+
+    @GetMapping ("/active-todos")
+    public String activeTodos (Model model){
+        model.addAttribute("todoList", todoRepository.findAllByDone(false));
+        return "todolist";
     }
 }
