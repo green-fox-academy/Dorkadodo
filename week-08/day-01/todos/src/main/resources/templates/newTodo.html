@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Todo</title>
+    <link href="styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Todos for today:</h1>
+<div th:replace="fragments :: navBar"/>
+
+<h1>New Todo</h1>
+
+<br>
+
+<form method="post" action="/new-todo">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title">
+
+    <button type="submit">Save Todo</button>
+</form>
+</body>
+</html>
