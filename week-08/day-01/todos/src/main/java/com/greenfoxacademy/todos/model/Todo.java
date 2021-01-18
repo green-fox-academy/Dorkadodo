@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+
 
 @Entity
 public class Todo {
@@ -14,20 +17,30 @@ public class Todo {
     private String title;
     private Boolean urgent;
     private Boolean done;
+    private LocalDate dateOfCreation;
+
+    Timestamp timestamp;
+
 
     public Todo() {
         this.urgent = false;
         this.done = false;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        this.dateOfCreation = timestamp.toLocalDateTime().toLocalDate();
     }
     public Todo(String title) {
         this.title = title;
         this.urgent = false;
         this.done = false;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        this.dateOfCreation = timestamp.toLocalDateTime().toLocalDate();
     }
     public Todo(String title, Boolean urgent, Boolean done) {
         this.title = title;
         this.urgent = urgent;
         this.done = done;
+        timestamp = new Timestamp(System.currentTimeMillis());
+        this.dateOfCreation = timestamp.toLocalDateTime().toLocalDate();
     }
 
 
@@ -49,6 +62,10 @@ public class Todo {
 
     public Boolean getUrgent() {
         return urgent;
+    }
+
+    public LocalDate getDateOfCreation() {
+        return dateOfCreation;
     }
 
     public void setUrgent(Boolean urgent) {
