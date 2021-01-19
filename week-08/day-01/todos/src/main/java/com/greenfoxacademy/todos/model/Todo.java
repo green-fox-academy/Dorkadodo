@@ -1,9 +1,6 @@
 package com.greenfoxacademy.todos.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -19,8 +16,11 @@ public class Todo {
     private Boolean done;
     private LocalDate dateOfCreation;
 
-    Timestamp timestamp;
+    @ManyToOne
+    @JoinColumn (name = "assignee_id")
+    private Assignee assignee;
 
+    Timestamp timestamp;
 
     public Todo() {
         this.urgent = false;
@@ -43,6 +43,14 @@ public class Todo {
         this.dateOfCreation = timestamp.toLocalDateTime().toLocalDate();
     }
 
+
+    public Assignee getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(Assignee assignee) {
+        this.assignee = assignee;
+    }
 
     public Long getId() {
         return id;

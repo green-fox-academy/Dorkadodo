@@ -5,30 +5,38 @@
     <title>Todo List</title>
     <link href="styles.css" type="text/css" rel="stylesheet">
 </head>
+
 <body>
+    <main>
 
-    <div th:replace="fragments :: navBar"/>
+        <div th:replace="fragments :: navBar"/>
+        <div th:replace="fragments :: searchBar"/>
 
-    <h1>Edit Todo</h1>
+        <h1>Edit Todo</h1>
 
-    <form method="post" action="/edit-todo" th:object="${todo}">
+        <form method="post" action="/edit-todo" th:object="${todo}">
 
-        <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{id}">
 
-        <label for="title">Title</label>
-        <input type="text" th:field="*{title}">
+            <label for="title">Title</label>
+            <input type="text" th:field="*{title}">
 
-        <br>
 
-        <label for="urgent">It is urgent</label>
-        <input type="checkbox" th:field="*{urgent}"/>
+            <label for="urgent">It is urgent</label>
+            <input type="checkbox" th:field="*{urgent}"/>
 
-        <br>
 
-        <label for="done">Finished</label>
-        <input type="checkbox" th:field="*{done}"/>
+            <label for="done">Finished</label>
+            <input type="checkbox" th:field="*{done}"/>
 
-        <button type="submit">Edit Todo</button>
-    </form>
+            <label for="assigneeName">Assignee</label>
+            <select id="assigneeName" name="assigneeName">
+                <option th:each="assignee:${assigneeList}" th:text="${assignee.name}"/>
+            </select>
+
+
+            <button type="submit">Edit Todo</button>
+        </form>
+    </main>
 </body>
 </html>

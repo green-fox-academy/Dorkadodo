@@ -1,7 +1,16 @@
-<div th:fragment="navBar">
+<div th:fragment="navBar" id="navBar">
     <nav>
         <a href="/list">All Todos</a>
         <a href="/active-todos">Active Todos</a>
         <a href="/new-todo">Add new Todo</a>
+        <a href="/new-assignee">Add new Assignee</a>
+        <a href="/assignees">Show all Assignees</a>
     </nav>
+</div>
+
+<div th:fragment="searchBar" id="searchBar">
+    <form method="post" action="/search-todo">
+        <input type="text" id="searchString" name="searchString" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
 </div>

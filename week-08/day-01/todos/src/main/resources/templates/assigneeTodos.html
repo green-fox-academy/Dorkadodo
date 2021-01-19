@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Properties</title>
+    <link href="styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<main>
+    <div th:replace="fragments :: navBar"/>
+    <div th:replace="fragments :: searchBar"/>
+
+    <h1 th:text="'Todos of ' +${assignee}"></h1>
+
+    <table>
+        <tr>
+            <th>action</th>
+            <th>urgent</th>
+            <th>done</th>
+            <th>added</th>
+
+        </tr>
+        <tr th:each="todo:${assigneeTodos}">
+            <td><a th:href="@{'/todo-properties?id=' + ${todo.id}}"><span th:text="${todo.title}"/></a></td>
+            <td th:text="${todo.urgent}"/>
+            <td th:text="${todo.done}"/>
+            <td th:text="${todo.dateOfCreation}"/>
+            <td><a th:href="'/edit-todo?id=' + ${todo.id}">edit</a></td>
+            <td><a th:href="'/delete-todo/' + ${todo.id} + '/delete'">delete</a></td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

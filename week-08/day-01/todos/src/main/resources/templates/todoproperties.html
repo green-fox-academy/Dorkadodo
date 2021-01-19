@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Properties</title>
-        <link href="styles.css" type="text/css" rel="stylesheet">
-    </head>
-    <body>
-    <div th:replace="fragments :: navBar"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Properties</title>
+    <link href="styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <div th:replace="fragments :: navBar"/>
+        <div th:replace="fragments :: searchBar"/>
 
         <h1>Properties:</h1>
 
@@ -15,5 +17,6 @@
         <p th:text="${todo.done}? 'FINISHED' : 'UNFINISHED'"/>
 
         <a th:href="'/edit-todo/' + ${todo.id} + '/edit'">edit</a>
-    </body>
+    </main>
+</body>
 </html>

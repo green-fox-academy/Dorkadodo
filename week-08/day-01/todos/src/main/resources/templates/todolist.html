@@ -6,26 +6,30 @@
     <link href="styles.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <h1>Todos for today:</h1>
-    <div th:replace="fragments :: navBar"/>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>action</th>
-            <th>urgent</th>
-            <th>done</th>
-            <th>added</th>
-        </tr>
-        <tr th:each="todo:${todoList}">
-            <td th:text="${todo.id}"/>
-            <td><a th:href="@{'/todo-properties?id=' + ${todo.id}}"><span th:text="${todo.title}"/></a></td>
-            <td th:text="${todo.urgent}"/>
-            <td th:text="${todo.done}"/>
-            <td th:text="${todo.dateOfCreation}"/>
+    <main>
+        <h1>Todos for today:</h1>
+        <div th:replace="fragments :: navBar"/>
+        <div th:replace="fragments :: searchBar"/>
 
-            <td><a th:href="'/edit-todo/' + ${todo.id} + '/edit'">edit</a></td>
-            <td><a th:href="'/delete-todo/' + ${todo.id} + '/delete'">delete</a></td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>action</th>
+                <th>urgent</th>
+                <th>done</th>
+                <th>added</th>
+
+            </tr>
+            <tr th:each="todo:${todoList}">
+                <td th:text="${todo.id}"/>
+                <td><a th:href="@{'/todo-properties?id=' + ${todo.id}}"><span th:text="${todo.title}"/></a></td>
+                <td th:text="${todo.urgent}"/>
+                <td th:text="${todo.done}"/>
+                <td th:text="${todo.dateOfCreation}"/>
+                <td><a th:href="'/edit-todo?id=' + ${todo.id}">edit</a></td>
+                <td><a th:href="'/delete-todo/' + ${todo.id} + '/delete'">delete</a></td>
+            </tr>
+        </table>
+    </main>
 </body>
 </html>
