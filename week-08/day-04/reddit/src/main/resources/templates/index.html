@@ -3,18 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Reddit</title>
+    <link href="styles.css" type="text/css" rel="stylesheet">
 </head>
 <body>
+<nav>
 <a href="/reddit/new-post">Submit new post</a>
+<a href="/reddit/login">Login</a>
+<a href="/reddit/sign-up">Sign Up</a>
+</nav>
 
+<main>
 <h1>Trending posts</h1>
 
-<table>
+<table id="postTable">
     <tr th:each="post : ${postList}">
-        <td th:text="${post.voteCount}"/>
-        <td th:text="${post.title}"/>
+        <td class="voting">
+            <table id="smallTable">
+                <tr>
+                <td><a th:href="'/reddit/upvote/' + ${post.id}">+</a></td>
+                <td th:text="${post.voteCount}"/>
+                <td><a th:href="'/reddit/downvote/' + ${post.id}">-</a></td>
+                </tr>
+            </table>
+        </td>
+        <td><a class="postTitle" th:href="'/reddit/read-post/' + ${post.id}" th:text="${post.title}"/></td>
+        <td><span class="date" th:text="${post.dateOfCreation}"/></td>
     </tr>
 </table>
 
+<table id="paging">
+    <tr>
+        <td th:each="pageNumber : ${pages}"><a th:href="'/reddit?page=' + ${pageNumber}"><span th:text="${pageNumber}"/> </a></td>
+    </tr>
+</table>
+</main>
 </body>
 </html>

@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 15px;
+    background-color: aliceblue;
+    font-family: "DejaVu Sans"
+}
+
+main {
+    margin: 15px auto;
+    background-color: white;
+    padding: 25px 35px;
+}
+
+h1 {
+    color: firebrick;
+}
+
+#postTable {
+    width: 100%;
+    margin: 15px auto;
+}
+
+table tr td {
+padding: 10px 20px;
+}
+
+.postTitle td{
+    width: 50%;
+}
+
+.date span {
+float: left}
+
+.voting {
+    width: 10%;
+}
+#smallTable {
+    width: 100%;
+    border: none;
+}
+
+#paging {
+    margin: 20px auto;
+}
+
+#paging td {
+    text-decoration: none;
+    margin: 0;
+    border: none;
+    padding: 5px 10px;
+    text-decoration: underline;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #611212;
+}
