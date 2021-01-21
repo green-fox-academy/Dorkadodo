@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reddit</title>
+</head>
+<body>
+<a href="/reddit/new-post">Submit new post</a>
+
+<h1>Trending posts</h1>
+
+<table>
+    <tr th:each="post : ${postList}">
+        <td th:text="${post.voteCount}"/>
+        <td th:text="${post.title}"/>
+    </tr>
+</table>
+
+</body>
+</html>
