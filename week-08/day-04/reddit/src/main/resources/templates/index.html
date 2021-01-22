@@ -6,11 +6,11 @@
     <link href="styles.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-<nav>
-<a href="/reddit/new-post">Submit new post</a>
-<a href="/reddit/login">Login</a>
-<a href="/reddit/sign-up">Sign Up</a>
-</nav>
+    <nav>
+        <a class="newPostButton" href="/reddit/new-post">Submit new post</a>
+        <a class="userButton" href="/reddit/login">Login</a>
+        <a class="userButton" href="/reddit/sign-up">Sign Up</a>
+    </nav>
 
 <main>
 <h1>Trending posts</h1>
@@ -33,7 +33,10 @@
 
 <table id="paging">
     <tr>
-        <td th:each="pageNumber : ${pages}"><a th:href="'/reddit?page=' + ${pageNumber}"><span th:text="${pageNumber}"/> </a></td>
+        <td th:each="pageNumber : ${pages}">
+            <a th:if="${pageNumber} != ${currentPageNumber}" th:href="'/reddit?page=' + ${pageNumber}"><span th:text="${pageNumber}"/></a>
+            <span th:if="${pageNumber} == ${currentPageNumber}"><span th:text="${pageNumber}"/></span>
+        </td>
     </tr>
 </table>
 </main>

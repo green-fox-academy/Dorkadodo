@@ -16,17 +16,54 @@ public class PostService {
     private PostRepository postRepository;
 
     public List<Post> getPosts(String pageNumber) {
+        Long pageNumberLong = pageNumberToLong(pageNumber);
+        List<Post> postsOfPage = postRepository.getPostsByPageNumber((pageNumberLong - 1) * 10);
+        return postsOfPage;
+    }
+
+    public List<String> getPageNumbers(String pageNumberString) {
+        Long pageNumber = pageNumberToLong(pageNumberString);
+        Long pageCount = numberOfPages();
+        List<String> pages = new ArrayList<>();
+
+        if (pageNumber <= 4){
+            if (pageCount < 7){
+                for (int i = 0; i < pageCount; i++) {
+                    pages.add(String.valueOf(i + 1));
+                }
+            } else {
+                for (int i = 0; i < 7; i++) {
+                    pages.add(String.valueOf(i + 1));
+                }
+            }
+        } else if ((pageCount - pageNumber) <= 3) {
+            for (int i = 0; i < 7; i++) {
+                pages.add(String.valueOf(pageCount - (6 - i)));
+            }
+        } else {
+            for (int i = 0; i < 7; i++) {
+                pages.add(String.valueOf(pageNumber - 3 + i));
+            }
+        }
+
+        return pages;
+    }
+
+    private Long pageNumberToLong(String pageNumber) {
         Long pageNumberLong;
         try {
             pageNumberLong = Long.valueOf(pageNumber);
         } catch (NumberFormatException ex){
             pageNumberLong = 1L;
         }
-        if (pageNumberLong > getPages().size()){
+        if (pageNumberLong > numberOfPages()){
             pageNumberLong = 1L;
         }
-        List<Post> postsOfPage = postRepository.getPostsByPageNumber((pageNumberLong - 1) * 10);
-        return postsOfPage;
+        return pageNumberLong;
+    }
+
+    private Long numberOfPages (){
+        return  (postRepository.count() / 10) + 1;
     }
 
     public void addNewPost(Post post) {
@@ -59,14 +96,5 @@ public class PostService {
         Post post = optionalPost.get();
         post.setVoteCount(post.getVoteCount() - 1);
         postRepository.save(post);
-    }
-
-    public List<String> getPages() {
-        Long pageCount = (postRepository.count() / 10) + 1;
-        List<String> pages = new ArrayList<>();
-        for (int i = 0; i < pageCount; i++) {
-            pages.add(String.valueOf(i + 1));
-        }
-        return pages;
     }
 }

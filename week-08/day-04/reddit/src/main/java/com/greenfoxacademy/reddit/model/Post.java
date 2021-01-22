@@ -52,7 +52,9 @@ public class Post {
     }
 
     public String getDescription(){
-        description = description.replaceAll("(\r\n)", "<br>");
+        if (!(description == null)) {
+            description = description.replaceAll("(\r\n)", "<br>");
+        }
         return description;
     }
 

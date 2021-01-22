@@ -11,6 +11,25 @@ main {
     padding: 25px 35px;
 }
 
+nav {
+    padding: 10px 0;
+}
+
+nav a {
+    border: 2px solid #611212;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-top: 0;
+    margin-right: 5px;
+    background-color: #611212;
+    color: white;
+}
+
+.userButton {
+    float: right;
+    margin-top: 0;
+}
+
 h1 {
     color: firebrick;
 }
@@ -21,7 +40,7 @@ h1 {
 }
 
 table tr td {
-padding: 10px 20px;
+padding: 7px 20px;
 }
 
 .postTitle td{
@@ -39,20 +58,26 @@ float: left}
     border: none;
 }
 
-#paging {
-    margin: 20px auto;
-}
-
-#paging td {
-    text-decoration: none;
-    margin: 0;
-    border: none;
-    padding: 5px 10px;
-    text-decoration: underline;
-}
-
 a {
     text-decoration: none;
     font-weight: bold;
     color: #611212;
+}
+
+#paging {
+    margin: 20px auto;
+}
+
+#paging td a{
+    text-decoration: underline;
+    text-underline: #611212;
+    margin: 0;
+    border: none;
+    padding: 5px 10px;
+}
+
+#paging td span span{
+    text-underline: none;
+    font-weight: bold;
+    color: black;
 }

@@ -23,7 +23,8 @@ public class RedditController {
 
     @GetMapping("/reddit")
     public String homePage(@RequestParam(required = false, defaultValue = "1") String page, Model model) {
-        model.addAttribute("pages", postService.getPages());
+        model.addAttribute("pages", postService.getPageNumbers(page));
+        model.addAttribute("currentPageNumber", page);
         model.addAttribute("postList", postService.getPosts(page));
         return "index";
     }
