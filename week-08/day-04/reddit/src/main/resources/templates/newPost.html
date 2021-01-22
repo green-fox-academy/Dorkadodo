@@ -9,6 +9,9 @@
 <body>
 <h1>Submit a new post</h1>
 <form method="post" action="/reddit/new-post">
+
+    <input type="hidden" id="userName" name="userName" th:value="${userName}">
+
     <label for="title">Title:</label>
     <input type="text" id="title" name="title">
 

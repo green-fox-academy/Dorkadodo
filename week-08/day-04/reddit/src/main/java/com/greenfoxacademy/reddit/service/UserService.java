@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,10 @@ public class UserService {
 
     public UserService(){
         loggedInUsers = new ArrayList<>();
+    }
+
+    public User getUserByName (String userName){
+        return userRepository.findUserByUsername(userName);
     }
 
     public List<User> getLoggedInUsers() {
@@ -36,6 +41,23 @@ public class UserService {
         }
         return null;
     }
+
+//    public Boolean doesUsernameContainInvalidCharacter (String username){
+//
+//        List<Character> correctCharacters = new ArrayList<>();
+//        for (int i = 48; i < 58; i++) {
+//            correctCharacters.add((char)i);
+//        }
+//        for (int i = 65; i < 91; i++) {
+//            correctCharacters.add((char)i);
+//        }
+//        for (int i = 97; i < 122; i++) {
+//            correctCharacters.add((char)i);
+//        }
+//
+//        Arrays.asList(username.toCharArray()).stream()
+//                .an
+//    }
 
     public Boolean userExists (String username){
         Optional<User> optionalUser = ((List<User>)userRepository.findAll()).stream()
@@ -65,4 +87,7 @@ public class UserService {
         loggedInUsers.add(userRepository.findUserByUsername(username));
     }
 
+    public void logoutUser (String username){
+        loggedInUsers.remove(userRepository.findUserByUsername(username));
+    }
 }

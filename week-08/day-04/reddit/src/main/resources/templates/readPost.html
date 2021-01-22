@@ -11,7 +11,25 @@
         <h1 th:text="${post.title}"/>
         <p th:utext="${post.description}"/>
 
-        <a href="/reddit">Back to main page</a>
+        <br>
+
+        <p th:text="'Author: ' + ${author}"/>
+
+        <br>
+
+        <p class="labels"><span th:each="assignedLabel : ${assignedLabeLList}" th:text="${assignedLabel}"/></p>
+
+        <form th:if="${user}" method="post" th:action="'/reddit/add-label/' + ${post.id} + '?user=' + ${user}">
+            <label for="newLabel">Add new label</label>
+            <select id="newLabel" name="newLabel">
+                <option th:each="label:${labelList}" th:text="${label}"/>
+            </select>
+            <button type="submit">Add label</button>
+        </form>
+
+        <br>
+
+        <a th:href="${user} ? '/reddit?user=' + ${user}: '/reddit'">Back to main page</a>
     </main>
 
 </body>

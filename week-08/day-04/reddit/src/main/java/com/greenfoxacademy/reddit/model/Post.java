@@ -3,6 +3,7 @@ package com.greenfoxacademy.reddit.model;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Post {
@@ -19,11 +20,27 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany
+    @JoinTable(
+            name="label_tagged",
+            joinColumns = @JoinColumn(name="post_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private Set<Label> addedLabels;
+
+    @Transient
     private Date date;
 
     public Post(){
         this.voteCount = 0;
         this.dateOfCreation = new Date();
+    }
+
+    public Set<Label> getAddedLabels() {
+        return addedLabels;
+    }
+
+    public void setAddedLabels(Set<Label> addedLabels) {
+        this.addedLabels = addedLabels;
     }
 
     public User getUser() {
@@ -32,14 +49,6 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getDateOfCreation() {

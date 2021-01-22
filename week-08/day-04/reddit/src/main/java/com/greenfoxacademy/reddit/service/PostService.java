@@ -1,5 +1,6 @@
 package com.greenfoxacademy.reddit.service;
 
+import com.greenfoxacademy.reddit.model.Label;
 import com.greenfoxacademy.reddit.model.Post;
 import com.greenfoxacademy.reddit.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private LabelService labelService;
 
     public List<Post> getPosts(String pageNumber) {
         Long pageNumberLong = pageNumberToLong(pageNumber);
@@ -97,4 +103,37 @@ public class PostService {
         post.setVoteCount(post.getVoteCount() - 1);
         postRepository.save(post);
     }
+
+    public void addUserToPost(Post post, String userName){
+        post.setUser(userService.getUserByName(userName));
+    }
+
+    public void addLabelToPost(Long postID, String addedLabel){
+        Optional<Post> optionalPost = postRepository.findById(postID);
+        if (optionalPost.isEmpty()){
+            return;
+        }
+        Post post = optionalPost.get();
+
+        Label newLabel = labelService.getLabelByName(addedLabel);
+        if (newLabel == null){
+            return;
+        }
+        post.getAddedLabels().add(newLabel);
+        postRepository.save(post);
+    }
+
+    public List<String> getAssignedLabelsByPostId (Long postID){
+        Optional<Post> optionalPost = postRepository.findById(postID);
+        if(optionalPost.isEmpty()){
+            return null;
+        }
+        List<String> assignedLabels = optionalPost.get().getAddedLabels()
+                .stream()
+                .map(label -> label.getLabelName())
+                .collect(Collectors.toList());
+        return assignedLabels;
+    }
+
+
 }

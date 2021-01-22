@@ -6,7 +6,7 @@ body {
 }
 
 main {
-    margin: 15px auto;
+    margin: 40px auto;
     background-color: white;
     padding: 25px 35px;
 }
@@ -15,11 +15,10 @@ nav {
     padding: 10px 0;
 }
 
-nav a {
+nav a, .labels span {
     border: 2px solid #611212;
     border-radius: 4px;
     padding: 4px 8px;
-    margin-top: 0;
     margin-right: 5px;
     background-color: #611212;
     color: white;
