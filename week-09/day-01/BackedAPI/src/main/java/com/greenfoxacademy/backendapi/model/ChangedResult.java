@@ -1,9 +1,13 @@
 package com.greenfoxacademy.backendapi.model;
 
-public class ChangedUntilValue {
+public class ChangedResult {
     private Integer result;
 
-    public ChangedUntilValue() {
+    public ChangedResult() {
+    }
+
+    public ChangedResult(Integer result) {
+        this.result = result;
     }
 
     public Integer getResult() {
