@@ -25,10 +25,6 @@ public class UserService {
         return userRepository.findUserByUsername(userName);
     }
 
-    public List<User> getLoggedInUsers() {
-        return loggedInUsers;
-    }
-
     public String signUpConfirmationMessage (String username, String password, String passwordConfirmation){
         if (username == null || password == null || passwordConfirmation == null){
             return "Sorry, looks like some fields weren't correctly filled out!";
@@ -39,25 +35,15 @@ public class UserService {
         if (!(password.equals(passwordConfirmation))){
             return "Password confirmation didn't work!";
         }
+        if (!(isUsernameValid(username))){
+            return "Username should only contain a-z, A-Z and 0-9!";
+        }
         return null;
     }
 
-//    public Boolean doesUsernameContainInvalidCharacter (String username){
-//
-//        List<Character> correctCharacters = new ArrayList<>();
-//        for (int i = 48; i < 58; i++) {
-//            correctCharacters.add((char)i);
-//        }
-//        for (int i = 65; i < 91; i++) {
-//            correctCharacters.add((char)i);
-//        }
-//        for (int i = 97; i < 122; i++) {
-//            correctCharacters.add((char)i);
-//        }
-//
-//        Arrays.asList(username.toCharArray()).stream()
-//                .an
-//    }
+    private Boolean isUsernameValid (String username){
+        return username.matches("[a-zA-Z0-9]+");
+    }
 
     public Boolean userExists (String username){
         Optional<User> optionalUser = ((List<User>)userRepository.findAll()).stream()

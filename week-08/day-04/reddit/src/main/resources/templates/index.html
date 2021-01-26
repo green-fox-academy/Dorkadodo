@@ -15,6 +15,15 @@
 <main>
 <h1>Trending posts</h1>
 
+    <form th:action="${user} ? '/reddit/filter?user=' + ${user}: '/reddit/filter'" method="post">
+        <label for="labelFilter">Filter by label:</label>
+        <select id="labelFilter" name="label">
+            <option th:each="label:${labelList}" th:text="${label}"/>
+        </select>
+        <button type="submit">Search</button>
+        <a th:href="${user} ? '/reddit?user=' + ${user} : '/reddit'">Get all post</a>
+    </form>
+
 <table id="postTable">
     <tr th:each="post : ${postList}">
         <td class="voting">

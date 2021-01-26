@@ -29,12 +29,18 @@ public class RedditController {
     }
 
     @GetMapping("/reddit")
-    public String homePage(@RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false) String user, Model model) {
-        model.addAttribute("pages", postService.getPageNumbers(page));
+    public String homePage(@RequestParam(required = false, defaultValue = "1") String page, @RequestParam (required = false) String label, @RequestParam(required = false) String user, Model model) {
+        model.addAttribute("pages", postService.getPageNumbers(page, label));
         model.addAttribute("currentPageNumber", page);
-        model.addAttribute("postList", postService.getPosts(page));
+        model.addAttribute("postList", postService.getPosts(page, label));
+        model.addAttribute("labelList", labelService.getAllLabelNames());
         model.addAttribute("user", user);
         return "index";
+    }
+
+    @PostMapping("/reddit/filter")
+    public String filterByLabel (@RequestParam (required = false) String user, @RequestParam String label, @RequestParam(required = false, defaultValue = "1") String page, Model model){
+        return "redirect:/reddit?label=" + label + ((user != null) ? "&user=" + user : "") + ((page != null) ? "&page=" + page : "");
     }
 
     @GetMapping("/reddit/new-post")
@@ -129,7 +135,6 @@ public class RedditController {
         String confirmMessage = userService.signUpConfirmationMessage(username, password, confirmPassword);
         if (confirmMessage == null) {
             userService.signUpUser(username, password);
-            model.addAttribute("message", "Congratulations, you can login with your new credentials!");
             return "redirect:/reddit/login";
         }
         model.addAttribute("message", confirmMessage);

@@ -21,17 +21,26 @@ public class PostService {
     @Autowired
     private LabelService labelService;
 
-    public List<Post> getPosts(String pageNumber) {
+    public List<Post> getPosts(String pageNumber, String labelName) {
         Long pageNumberLong = pageNumberToLong(pageNumber);
-        List<Post> postsOfPage = postRepository.getPostsByPageNumber((pageNumberLong - 1) * 10);
-        return postsOfPage;
+        if (labelName == null) {
+            return postRepository.getAllPostsByPageNumber((pageNumberLong - 1) * 10);
+        }
+        return postRepository.getPostsOfPageByAddedLabels((pageNumberLong - 1) * 10, labelService.getLabelByName(labelName).getId());
     }
 
-    public List<String> getPageNumbers(String pageNumberString) {
+    public List<String> getPageNumbers(String pageNumberString, String label) {
         Long pageNumber = pageNumberToLong(pageNumberString);
-        Long pageCount = numberOfPages();
-        List<String> pages = new ArrayList<>();
+        Long pageCount = numberOfPages(label);
+        List<String> pages = getDisplayablePageNumbers(pageNumber, pageCount);
+        return pages;
+    }
 
+    private List<String> getDisplayablePageNumbers(Long pageNumber, Long pageCount) {
+        if (pageNumber > pageCount){
+            pageNumber = 1L;
+        }
+        List<String> pages = new ArrayList<>();
         if (pageNumber <= 4){
             if (pageCount < 7){
                 for (int i = 0; i < pageCount; i++) {
@@ -51,7 +60,6 @@ public class PostService {
                 pages.add(String.valueOf(pageNumber - 3 + i));
             }
         }
-
         return pages;
     }
 
@@ -62,14 +70,14 @@ public class PostService {
         } catch (NumberFormatException ex){
             pageNumberLong = 1L;
         }
-        if (pageNumberLong > numberOfPages()){
-            pageNumberLong = 1L;
-        }
         return pageNumberLong;
     }
 
-    private Long numberOfPages (){
-        return  (postRepository.count() / 10) + 1;
+    private Long numberOfPages (String labelName){
+        if (labelName == null) {
+            return (postRepository.count() / 10) + 1;
+        }
+        return postRepository.countAllByAddedLabels(labelService.getLabelByName(labelName)) / 10 + 1;
     }
 
     public void addNewPost(Post post) {
@@ -134,6 +142,5 @@ public class PostService {
                 .collect(Collectors.toList());
         return assignedLabels;
     }
-
 
 }

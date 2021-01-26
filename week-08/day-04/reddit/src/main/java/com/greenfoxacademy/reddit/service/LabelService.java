@@ -18,6 +18,13 @@ public class LabelService {
     @Autowired
     private PostService postService;
 
+    public List<String> getAllLabelNames (){
+        List<String> labelNames = ((List<Label>)labelRepository.findAll()).stream()
+                .map(label -> label.getLabelName())
+                .collect(Collectors.toList());
+        return labelNames;
+    }
+
     public List<String> getNotAssignedLabels (Long postID){
         Post post = postService.getPostById(postID);
         if(post == null){

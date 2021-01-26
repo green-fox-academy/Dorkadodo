@@ -63,6 +63,16 @@ a {
     color: #611212;
 }
 
+form a {
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    background-color: #611212;
+    border-radius: 4px;
+    padding: 5px 8px;
+    margin: 0 8px;
+}
+
 #paging {
     margin: 20px auto;
 }
