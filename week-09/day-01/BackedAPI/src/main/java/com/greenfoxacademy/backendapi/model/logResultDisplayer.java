@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class resultDisplayer {
+public class logResultDisplayer {
 
     @Autowired
     private LogRepository logRepository;
@@ -14,7 +14,7 @@ public class resultDisplayer {
     @JsonProperty("entry_count")
     private Integer entryCount;
 
-    public resultDisplayer(List<Log> entries){
+    public logResultDisplayer(List<Log> entries){
         this.entries = entries;
         this.entryCount = entries.size();
     }

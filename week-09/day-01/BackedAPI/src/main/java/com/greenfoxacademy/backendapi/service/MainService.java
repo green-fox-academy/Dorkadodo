@@ -103,14 +103,39 @@ public class MainService {
         logRepository.save(new Log(endpoint, data));
     }
 
+    public logResultDisplayer getLogResults(String count, String page) {
+        Long countNumber = stringToPositiveLong(count);
+        Long pageNumber = stringToPositiveLong(page);
+        if (countNumber == null) {
+            return new logResultDisplayer((List<Log>) logRepository.findAll());
+        }
+        if (pageNumber == null || (pageNumber > (logRepository.count() / countNumber) + 1)) {
+            return new logResultDisplayer((List<Log>) logRepository.findAllWithCount(countNumber));
+        }
+        return new logResultDisplayer((List<Log>) logRepository.findAllWithCountAndPage(countNumber, (pageNumber - 1) * countNumber));
+    }
+
+    private Long stringToPositiveLong(String stringToChange) {
+        Long number;
+        try {
+            number = Long.valueOf(stringToChange);
+            if (number < 0) {
+                number = null;
+            }
+        } catch (NumberFormatException | NullPointerException ex) {
+            number = null;
+        }
+        return number;
+    }
+
     public SithText translateToSith(Text text) {
         List<String> sentencesToTranslate = Arrays.asList(text.getText().trim().split("\\. "));
         String lastSentence = sentencesToTranslate.get(sentencesToTranslate.size() - 1);
-        sentencesToTranslate.set(sentencesToTranslate.size() -1, lastSentence.replaceAll("\\.", ""));
+        sentencesToTranslate.set(sentencesToTranslate.size() - 1, lastSentence.replaceAll("\\.", ""));
         List<String> translatedSentences = new ArrayList<>();
 
         Random random = new Random();
-        List<String>randomSentenceList = getRandomSentenceList();
+        List<String> randomSentenceList = getRandomSentenceList();
 
         for (String sentence : sentencesToTranslate) {
             String translatedSentence = getSwappedSentence(sentence);
@@ -126,16 +151,20 @@ public class MainService {
 
     private String getSwappedSentence(String sentence) {
         List<String> words = Arrays.asList(sentence.split(" "));
-        for (int i = 0; i < words.size() / 2; i++) {
-            Collections.swap(words, i * 2, i * 2 + 1);
-        }
-        String translatedSentence = words.stream()
+        String translatedSentence = swapWords(words).stream()
                 .collect(Collectors.joining(" ", "", ". "));
         translatedSentence = translatedSentence.substring(0, 1).toUpperCase() + translatedSentence.substring(1).toLowerCase();
         return translatedSentence;
     }
 
-    private List<String> getRandomSentenceList (){
+    private List<String> swapWords(List<String> words) {
+        for (int i = 0; i < words.size() / 2; i++) {
+            Collections.swap(words, i * 2, i * 2 + 1);
+        }
+        return words;
+    }
+
+    private List<String> getRandomSentenceList() {
         List<String> randomSentenceList = new ArrayList<>();
         randomSentenceList.add("Well. ");
         randomSentenceList.add("Ummm. ");
@@ -149,8 +178,79 @@ public class MainService {
         return randomSentenceList;
     }
 
-    public resultDisplayer getLogResults (){
-        return new resultDisplayer((List<Log>) logRepository.findAll());
+    public TranslatedText translateToWeirdLanguage(ReceivedForTranslation receivedForTranslation) {
+        switch (receivedForTranslation.getLang()) {
+            case "hu": {
+                return new TranslatedText(translateToTeve(receivedForTranslation.getText()), "teve");
+            }
+            case "en": {
+                return new TranslatedText(translateToGibberish(receivedForTranslation.getText()), "gibberish");
+            }
+            default:
+                return null;
+        }
+    }
+
+    private String translateToTeve(String textToTranslate) {
+        List<String> textChars = textToStringList(textToTranslate);
+        return addTeveCharsToString(textChars);
+    }
+
+    private String translateToGibberish(String textToTranslate) {
+        List<String> textChars = textToStringList(textToTranslate);
+        return addGibberishToString(textChars);
+    }
+
+    private List<String> textToStringList(String textToTranslate) {
+        List<String> textChars = textToTranslate.chars()
+                .mapToObj(e -> (char) e)
+                .map(character -> character.toString())
+                .collect(Collectors.toList());
+        return textChars;
+    }
+
+    private String addTeveCharsToString(List<String> textChars) {
+        List<String> huVowelsWithCapitals = getHuVowelList();
+        String teveText = textChars.stream()
+                .map(character -> huVowelsWithCapitals.contains(character) ? character + "v" + character.toLowerCase() : character)
+                .collect(Collectors.joining());
+        return teveText;
+    }
+
+    private String addGibberishToString(List<String> textChars) {
+        List<String> enVowelsWithCapitals = getEnVowelList();
+        for (int i = textChars.size() - 1; i >= 0; i--) {
+            if (enVowelsWithCapitals.contains(textChars.get(i)) && (i == 0 || !(enVowelsWithCapitals.contains(textChars.get(i - 1))))) {
+                if (((int) (textChars.get(i).charAt(0)) >= 65) && ((int) (textChars.get(i).charAt(0)) <= 90)) {
+                    textChars.set(i, "Idig" + textChars.get(i).toLowerCase());
+                } else {
+                    textChars.set(i, "idig" + textChars.get(i));
+                }
+            }
+        }
+        return String.join("", textChars);
+    }
+
+    private List<String> getHuVowelList() {
+        List<String> huVowels = Arrays.asList("a", "á", "e", "é", "i", "í", "o", "ó", "ö", "ő", "u", "ú", "ü", "ű");
+        List<String> huVowelsWithCapitals = new ArrayList<>();
+        huVowels.stream()
+                .forEach(c -> {
+                    huVowelsWithCapitals.add(c);
+                    huVowelsWithCapitals.add(c.toUpperCase());
+                });
+        return huVowelsWithCapitals;
+    }
+
+    private List<String> getEnVowelList() {
+        List<String> huVowels = Arrays.asList("a", "e", "i", "o", "u");
+        List<String> huVowelsWithCapitals = new ArrayList<>();
+        huVowels.stream()
+                .forEach(c -> {
+                    huVowelsWithCapitals.add(c);
+                    huVowelsWithCapitals.add(c.toUpperCase());
+                });
+        return huVowelsWithCapitals;
     }
 
 }

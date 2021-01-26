@@ -2,11 +2,7 @@ package com.greenfoxacademy.backendapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greenfoxacademy.backendapi.model.ArrayToChange;
-import com.greenfoxacademy.backendapi.model.ChangedResult;
-import com.greenfoxacademy.backendapi.model.Text;
-import com.greenfoxacademy.backendapi.model.UntilNumber;
-import com.greenfoxacademy.backendapi.model.resultDisplayer;
+import com.greenfoxacademy.backendapi.model.*;
 import com.greenfoxacademy.backendapi.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,14 +78,31 @@ public class MainController {
     }
 
     @GetMapping("/log")
-    public resultDisplayer getLogResults (){
-        return mainService.getLogResults();
+    public logResultDisplayer getLogResults (@RequestParam (required = false) String count, @RequestParam (required = false) String page){
+        return mainService.getLogResults(count, page);
     }
 
     @PostMapping("/sith")
     public ResponseEntity<?> reverserOfSith (@RequestBody (required = false)Text text) throws JsonProcessingException {
         objectMapper = new ObjectMapper();
         mainService.addToLog("sith", objectMapper.writeValueAsString(text));
+        if (text == null || text.getText().equals("")){
+            return new ResponseEntity(mainService.error("Feed me some text you have to, padawan young you are. Hmmm."), HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok(mainService.translateToSith(text));
+    }
+
+    @PostMapping("/translate")
+    public ResponseEntity<?> textTranslator (@RequestBody (required = false) ReceivedForTranslation receivedForTranslation) throws JsonProcessingException {
+        objectMapper = new ObjectMapper();
+        mainService.addToLog("translate", objectMapper.writeValueAsString(receivedForTranslation));
+        if (receivedForTranslation == null){
+            return new ResponseEntity(mainService.error("I can't translate that!"), HttpStatus.BAD_REQUEST);
+        }
+        TranslatedText translatedText = mainService.translateToWeirdLanguage(receivedForTranslation);
+        if (translatedText == null){
+            return new ResponseEntity(mainService.error("I can't translate this language!"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(translatedText);
     }
 }
