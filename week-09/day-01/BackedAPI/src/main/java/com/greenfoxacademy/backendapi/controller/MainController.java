@@ -1,12 +1,12 @@
 package com.greenfoxacademy.backendapi.controller;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfoxacademy.backendapi.model.ArrayToChange;
 import com.greenfoxacademy.backendapi.model.ChangedResult;
 import com.greenfoxacademy.backendapi.model.Text;
 import com.greenfoxacademy.backendapi.model.UntilNumber;
+import com.greenfoxacademy.backendapi.model.resultDisplayer;
 import com.greenfoxacademy.backendapi.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,11 +81,15 @@ public class MainController {
         return ResponseEntity.ok(changedResult);
     }
 
-//    @PostMapping("/sith")
-//    public ResponseEntity<?> reverserOfSith (@RequestBody (required = false)Text text) throws JsonProcessingException {
-//        objectMapper = new ObjectMapper();
-//        mainService.addToLog("sith", objectMapper.writeValueAsString(text));
-//
-//        return;
-//    }
+    @GetMapping("/log")
+    public resultDisplayer getLogResults (){
+        return mainService.getLogResults();
+    }
+
+    @PostMapping("/sith")
+    public ResponseEntity<?> reverserOfSith (@RequestBody (required = false)Text text) throws JsonProcessingException {
+        objectMapper = new ObjectMapper();
+        mainService.addToLog("sith", objectMapper.writeValueAsString(text));
+        return ResponseEntity.ok(mainService.translateToSith(text));
+    }
 }

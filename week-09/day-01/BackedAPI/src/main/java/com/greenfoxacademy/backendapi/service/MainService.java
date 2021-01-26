@@ -103,21 +103,54 @@ public class MainService {
         logRepository.save(new Log(endpoint, data));
     }
 
-//    public SithText translateToSith(Text text) {
-//        String toTranslate = text.getText();
-//        String[] sentencesToTranslate = toTranslate.split(". ");
-//        List<String> transLatedSentences = new ArrayList<>();
-//        for (String sentence : sentencesToTranslate) {
-//            List<String>words = Arrays.asList(sentence.split(" "));
-//            for (int i = 0; i < words.size() % 2; i++) {
-//                Collections.swap(words, i * 2, i * 2 + 1);
-//            }
-//            String translatedSentence = words.stream()
-//                    .collect(Collectors.joining(" ", "", ". "));
-//            translatedSentence.substring(0,1).toUpperCase();
-//
-//            transLatedSentences.add(translatedSentence);
-//
-//    }
+    public SithText translateToSith(Text text) {
+        List<String> sentencesToTranslate = Arrays.asList(text.getText().trim().split("\\. "));
+        String lastSentence = sentencesToTranslate.get(sentencesToTranslate.size() - 1);
+        sentencesToTranslate.set(sentencesToTranslate.size() -1, lastSentence.replaceAll("\\.", ""));
+        List<String> translatedSentences = new ArrayList<>();
+
+        Random random = new Random();
+        List<String>randomSentenceList = getRandomSentenceList();
+
+        for (String sentence : sentencesToTranslate) {
+            String translatedSentence = getSwappedSentence(sentence);
+            translatedSentence += randomSentenceList.get(random.nextInt(randomSentenceList.size()));
+            translatedSentences.add(translatedSentence);
+        }
+
+        String translatedString = translatedSentences.stream()
+                .collect(Collectors.joining()).trim();
+
+        return new SithText(translatedString);
+    }
+
+    private String getSwappedSentence(String sentence) {
+        List<String> words = Arrays.asList(sentence.split(" "));
+        for (int i = 0; i < words.size() / 2; i++) {
+            Collections.swap(words, i * 2, i * 2 + 1);
+        }
+        String translatedSentence = words.stream()
+                .collect(Collectors.joining(" ", "", ". "));
+        translatedSentence = translatedSentence.substring(0, 1).toUpperCase() + translatedSentence.substring(1).toLowerCase();
+        return translatedSentence;
+    }
+
+    private List<String> getRandomSentenceList (){
+        List<String> randomSentenceList = new ArrayList<>();
+        randomSentenceList.add("Well. ");
+        randomSentenceList.add("Ummm. ");
+        randomSentenceList.add("Hmm. ");
+        randomSentenceList.add("Err. ");
+        randomSentenceList.add("Huh. ");
+        randomSentenceList.add("I mean. ");
+        randomSentenceList.add("You know. ");
+        randomSentenceList.add("I suppose. ");
+        randomSentenceList.add("Right. ");
+        return randomSentenceList;
+    }
+
+    public resultDisplayer getLogResults (){
+        return new resultDisplayer((List<Log>) logRepository.findAll());
+    }
 
 }

@@ -1,17 +1,20 @@
 package com.greenfoxacademy.backendapi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Greeter {
-    private String welcome_message;
+    @JsonProperty(value = "welcome_message")
+    private String welcomeMessage;
 
     public Greeter() {
 
     }
 
-    public String getWelcome_message() {
-        return welcome_message;
+    public String getWelcomeMessage() {
+        return welcomeMessage;
     }
 
     public void setWelcome_message(String name, String title) {
-        this.welcome_message = "Oh, hi there " + name + ", my dear " + title + "!";
+        this.welcomeMessage = "Oh, hi there " + name + ", my dear " + title + "!";
     }
 }

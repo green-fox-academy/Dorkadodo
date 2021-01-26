@@ -1,5 +1,7 @@
 package com.greenfoxacademy.backendapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ public class Log {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     private Date createdAt;
     private String endpoint;
