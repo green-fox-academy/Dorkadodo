@@ -18,7 +18,7 @@ public class MainController {
 
     @GetMapping("/doubling")
     public ResponseEntity<?> doubling(@RequestParam(required = false) Integer input) throws JsonProcessingException {
-        mainService.addToLog("doubling", "{\"name\":\"" + input + "\"}");
+//        mainService.addToLog("doubling", "{\"name\":\"" + input + "\"}");
         if (input == null) {
             return ResponseEntity.ok(mainService.error("Please provide an input!"));
         }

@@ -7,6 +7,11 @@ public class ChangedValue {
     public ChangedValue() {
     }
 
+    public ChangedValue(Integer received, Integer result) {
+        this.received = received;
+        this.result = result;
+    }
+
     public Integer getReceived() {
         return received;
     }
