@@ -1,8 +1,7 @@
 package com.greenfoxacademy.resttest;
 
 import com.greenfoxacademy.resttest.controller.GuardianController;
-import com.greenfoxacademy.resttest.model.GrootTranslator;
-import com.greenfoxacademy.resttest.model.ErrorMessage;
+import com.greenfoxacademy.resttest.model.*;
 import com.greenfoxacademy.resttest.service.GuardianService;
 
 import org.junit.jupiter.api.Test;
@@ -48,12 +47,69 @@ public class GuardianControllerTest {
     @Test
     public void getGrootMessageAfterNullInput() throws Exception {
 
-        ErrorMessage mockErrorMessage = new ErrorMessage("I am ErrorMessage Groot!");
-        when(guardianService.error()).thenReturn(mockErrorMessage);
+        ErrorMessage mockErrorMessage = new ErrorMessage("I am Error Groot!");
+        when(guardianService.error("I am Error Groot!")).thenReturn(mockErrorMessage);
 
         mockMvc.perform(get("/groot"))
                 .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("error", is("I am ErrorMessage Groot!")))
+                .andExpect(jsonPath("error", is("I am Error Groot!")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getYondusArrowSpeedCorrectInput() throws Exception {
+        Double distance = 100.0;
+        Double time = 10.0;
+        SpeedCalculator mockSpeedCalculator = new SpeedCalculator(distance, time);
+        when(guardianService.youndusArrow(distance, time)).thenReturn(mockSpeedCalculator);
+
+        mockMvc.perform(get("/yondu")
+                .param("distance", "100")
+                .param("time", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("speed", is(10.0)))
+                .andDo(print());
+    }
+
+    @Test
+    public void getYondusArrowSpeedNullInput() throws Exception {
+
+        ErrorMessage mockErrorMessage = new ErrorMessage("Please provide both distance and time parameters!");
+        when(guardianService.error("Please provide both distance and time parameters!")).thenReturn(mockErrorMessage);
+
+        mockMvc.perform(get("/yondu"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("Please provide both distance and time parameters!")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getStatusOfShipCargoWithoutInput () throws Exception {
+        WholeCargoDTO mockWholeCargo = new WholeCargoDTO(5, 10, 415, "3%", false);
+        when(guardianService.getListOfCargo()).thenReturn(mockWholeCargo);
+
+        mockMvc.perform(get("/rocket"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("caliber25", is(5)))
+                .andExpect(jsonPath("shipstatus", is("3%")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getStatusOfShipAfterFillingWithInput () throws Exception {
+        String caliber = ".25";
+        Integer amount = 500;
+        ReceivedAmmunitionDTO mockReceivedAmmunitionDTO = new ReceivedAmmunitionDTO(caliber, amount, "15%", false);
+        when(guardianService.fillCargoAndAnswer(caliber, amount)).thenReturn(mockReceivedAmmunitionDTO);
+        when(guardianService.isExistingCaliber(caliber)).thenReturn(true);
+        when(guardianService.isValidAmount(amount)).thenReturn(true);
+
+        mockMvc.perform(get("/rocket/fill")
+                .param("caliber", ".25")
+                .param("amount", "500"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("received", is(".25")))
+                .andExpect(jsonPath("shipstatus", is("15%")))
                 .andDo(print());
     }
 }
