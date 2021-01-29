@@ -80,4 +80,13 @@ public class GuardianControllerIntegrationTest {
                 .andExpect(jsonPath("ready", is(false)))
                 .andDo(print());
     }
+
+    @Test
+    public void getErrorMessageWhenNoAmountIsAdded() throws Exception {
+        mockMvc.perform(get("/rocket/fill")
+                .param("caliber", ".30"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("Provide the caliber and the loaded amount!")))
+                .andDo(print());
+    }
 }
