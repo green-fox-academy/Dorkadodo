@@ -1,5 +1,6 @@
 package com.greenfoxacademy.urlaliaser.controller;
 
+import com.greenfoxacademy.urlaliaser.model.SecretCodeDTO;
 import com.greenfoxacademy.urlaliaser.model.URLalias;
 import com.greenfoxacademy.urlaliaser.service.URLaliaserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class URLaliaserController {
@@ -55,5 +55,22 @@ public class URLaliaserController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", url.getUrl());
         return new ResponseEntity<>(headers,HttpStatus.PERMANENT_REDIRECT);
+    }
+
+    @GetMapping("/api/links")
+    public ResponseEntity<?> listOfStoredURL(){
+        return ResponseEntity.ok(urLaliaserService.getAllUrlAliases());
+    }
+
+    @DeleteMapping("/api/Links/{id}")
+    public ResponseEntity<?> deleteById (@PathVariable Long id, @RequestBody (required = false) SecretCodeDTO secretCode){
+        if (secretCode == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (!(urLaliaserService.doesSecretCodeMatch(id, secretCode))){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        urLaliaserService.deleteURLalias(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
