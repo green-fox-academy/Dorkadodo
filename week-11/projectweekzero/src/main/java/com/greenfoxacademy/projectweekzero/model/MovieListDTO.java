@@ -6,22 +6,22 @@ import java.util.List;
 
 public class MovieListDTO {
     private Integer page;
-    private List<Movie> movieList;
+    private List<Movie> results;
     @SerializedName("total_pages")
     private Integer totalPages;
     @SerializedName("total_results")
     private Integer totalResults;
 
     public MovieListDTO(){
-        movieList = new ArrayList<>();
+        results = new ArrayList<>();
     }
 
-    public List<Movie> getMovieList() {
-        return movieList;
+    public List<Movie> getResults() {
+        return results;
     }
 
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList = movieList;
+    public void setResults(List<Movie> results) {
+        this.results = results;
     }
 
     public Integer getPage() {

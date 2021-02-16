@@ -8,6 +8,7 @@ import com.greenfoxacademy.projectweekzero.repo.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -51,14 +52,27 @@ public class MainService {
         TheMovieDatabase movieRequest = retrofit.create(TheMovieDatabase.class);
         Call<MovieListDTO> call = movieRequest.getAllMovie(System.getenv("API_KEY"));
         System.out.println(call);
-        System.out.println(call.execute().body().getMovieList());
-//        call.execute().body().getMovieList().stream()
-//                .forEach(movie -> {movieRepository.save(movie);
-//                    System.out.println(movie);});
+//        System.out.println(call.execute().body().getResults());
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<MovieListDTO> call, Response<MovieListDTO> response) {
+//                List<Movie> listOfMovies = ;
+//                for(Movie movie : listOfMovies){
+//                    System.out.println(movie.toString());
+//                }
+                response.body().getResults().forEach(movie -> {movieRepository.save(movie);
+                            System.out.println(movie.toString());});
+            }
+
+            @Override
+            public void onFailure(Call<MovieListDTO> call, Throwable t) {
+                System.out.println("error");
+            }
+        });
     }
 
     public List<Movie> getAllMovies() throws IOException {
         getAllMoviesFromTMDb();
-        return (List<Movie>) movieRepository.findAll();
+        return null;
     }
 }
