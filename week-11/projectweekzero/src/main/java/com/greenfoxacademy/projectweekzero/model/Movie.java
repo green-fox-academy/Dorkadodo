@@ -1,16 +1,31 @@
 package com.greenfoxacademy.projectweekzero.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Movie {
+    @Id
+    @Column(nullable = false)
     private Integer id;
+    @SerializedName("imdb_id")
     private String imdbId;
+    @SerializedName("original_title")
     private String originalTitle;
     private String overview;
+    @SerializedName("release_date")
     private String releaseDate;
     private Integer runtime;
     private String status;
     private String title;
+
+    @ManyToMany
+    @JoinTable(
+            name="movie_genres",
+            joinColumns = @JoinColumn(name="movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres = null;
 
     //region GettersAndSetters

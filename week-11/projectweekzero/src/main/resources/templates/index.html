@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MovieList</title>
+</head>
+<body>
+
+<p th:if="${message}"><span th:text="${message}"/></p>
+
+<table th:unless="${message}">
+    <tr th:each="movie : ${movieList}">
+        <td th:text="${movie.title}"/>
+        <td th:text="${movie.releaseDate}"/>
+    </tr>
+</table>
+
+</body>
+</html>
