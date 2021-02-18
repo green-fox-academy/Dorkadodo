@@ -7,13 +7,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import java.util.List;
-
 public interface TheMovieDatabase {
 
     @GET("/3/movie/{movie_id}")
     Call<Movie> getMovieById (@Path("movie_id") Integer movieId, @Query("api_key") String apiKey);
 
     @GET("/3/movie/popular")
-    Call<MovieListDTO> getAllMovie (@Query("api_key") String apiKey);
+    Call<MovieListDTO> getAllMovie (@Query("page") Integer page, @Query("api_key") String apiKey);
 }

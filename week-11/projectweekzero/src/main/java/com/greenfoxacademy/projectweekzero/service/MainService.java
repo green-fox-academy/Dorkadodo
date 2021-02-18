@@ -22,6 +22,7 @@ public class MainService {
     @Autowired
     private MovieRepository movieRepository;
 
+
     public Movie getMovieById (Integer id) throws InvalidMovieIdException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(System.getenv("TMDB_URL"))
@@ -43,36 +44,29 @@ public class MainService {
         return movie;
     }
 
-    private void getAllMoviesFromTMDb () throws IOException {
+    private void getAllMoviesFromTMDb (Integer page) throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(System.getenv("TMDB_URL"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         TheMovieDatabase movieRequest = retrofit.create(TheMovieDatabase.class);
-        Call<MovieListDTO> call = movieRequest.getAllMovie(System.getenv("API_KEY"));
-        System.out.println(call);
-//        System.out.println(call.execute().body().getResults());
-        call.enqueue(new Callback<>() {
-            @Override
-            public void onResponse(Call<MovieListDTO> call, Response<MovieListDTO> response) {
-//                List<Movie> listOfMovies = ;
-//                for(Movie movie : listOfMovies){
-//                    System.out.println(movie.toString());
-//                }
-                response.body().getResults().forEach(movie -> {movieRepository.save(movie);
-                            System.out.println(movie.toString());});
-            }
-
-            @Override
-            public void onFailure(Call<MovieListDTO> call, Throwable t) {
-                System.out.println("error");
-            }
-        });
+        Call<MovieListDTO> call = movieRequest.getAllMovie(page, System.getenv("API_KEY"));
+        Response<MovieListDTO> movieResponse = call.execute();
+        movieRepository.deleteAll();
+        try {
+        movieResponse.body().getResults().forEach(movie -> movieRepository.save(movie));
+        } catch (NullPointerException ex){
+                    System.out.println("No popular movies found");
+        }
     }
 
     public List<Movie> getAllMovies() throws IOException {
-        getAllMoviesFromTMDb();
-        return null;
+        return getAllMovies(1);
+    }
+
+    public List<Movie> getAllMovies(Integer page) throws IOException {
+        getAllMoviesFromTMDb(page);
+        return (List<Movie>) movieRepository.findAll();
     }
 }

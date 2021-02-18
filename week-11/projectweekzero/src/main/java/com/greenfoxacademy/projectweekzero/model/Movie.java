@@ -11,11 +11,15 @@ public class Movie {
     @Column(nullable = false)
     private Integer id;
     @SerializedName("imdb_id")
+    @Column(name = "imdb_id")
     private String imdbId;
     @SerializedName("original_title")
+    @Column(name = "original_title")
     private String originalTitle;
+    @Column(columnDefinition = "TEXT")
     private String overview;
     @SerializedName("release_date")
+    @Column(name = "release_date")
     private String releaseDate;
     private Integer runtime;
     private String status;

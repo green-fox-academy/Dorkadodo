@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -17,6 +16,12 @@ public class MainController {
 
     @Autowired
     private MainService mainService;
+
+    @GetMapping("/")
+    public String homepage(Model model){
+        model.addAttribute("message", "Welcome to TMDb!");
+        return "index";
+    }
 
     @GetMapping("/get-movie/{movie_id}")
     public ResponseEntity<Object> getMovieById(@PathVariable ("movie_id") Integer movieId){
@@ -28,12 +33,18 @@ public class MainController {
     }
 
     @GetMapping("/list")
-    public String listAllMovies(Model model){
+    public String listAllMovies(Model model, @RequestParam (required = false) Integer page){
         try {
-            model.addAttribute("movieList", mainService.getAllMovies());
+            if (page == null) {
+                model.addAttribute("movieList", mainService.getAllMovies());
+            } else {
+                model.addAttribute("movieList", mainService.getAllMovies(page));
+            }
         } catch (IOException e) {
             model.addAttribute("message", "Sorry, something went wrong with getting the list!");
         }
         return "index";
     }
+
+
 }

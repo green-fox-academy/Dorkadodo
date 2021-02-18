@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form action="/authenticate" method="post">
+    <label for="username">Username:</label>
+    <input id="username" name="username" type="text">
+    <label for="password">Password:</label>
+    <input id="password" name="password" type="password">
+    <button id="submitLogin" type="button" onclick="loginFunction()">Login</button>
+
+</form>
+
+<script>
+    function loginFunction() {
+        let username = document.getElementById("username");
+        let password = document.getElementById("password");
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/authenticate", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                // Print received data from server
+                localStorage.setItem('JWT_AUTH', this.responseText);
+
+            }
+        };
+
+        var data = JSON.stringify({"username": username.value, "password": password.value});
+        xhr.send(data);
+    }
+</script>
+</body>
+</html>
