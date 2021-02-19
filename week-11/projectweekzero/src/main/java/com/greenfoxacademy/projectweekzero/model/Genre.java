@@ -15,6 +15,14 @@ public class Genre {
     @ManyToMany(mappedBy = "genres")
     private List<Movie> listOfMovies;
 
+    public Genre() {
+    }
+
+    public Genre(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -53,6 +53,10 @@ public class MainService {
         TheMovieDatabase movieRequest = retrofit.create(TheMovieDatabase.class);
         Call<MovieListDTO> call = movieRequest.getAllMovie(page, System.getenv("API_KEY"));
         Response<MovieListDTO> movieResponse = call.execute();
+        saveListToDatabase(movieResponse);
+    }
+
+    private void saveListToDatabase(Response<MovieListDTO> movieResponse) {
         movieRepository.deleteAll();
         try {
         movieResponse.body().getResults().forEach(movie -> movieRepository.save(movie));

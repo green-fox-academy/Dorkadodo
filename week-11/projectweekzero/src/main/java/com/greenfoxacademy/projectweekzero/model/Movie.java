@@ -32,6 +32,21 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres = null;
 
+    public Movie() {
+    }
+
+    public Movie(Integer id, String imdbId, String originalTitle, String overview, String releaseDate, Integer runtime, String status, String title, List<Genre> genres) {
+        this.id = id;
+        this.imdbId = imdbId;
+        this.originalTitle = originalTitle;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.runtime = runtime;
+        this.status = status;
+        this.title = title;
+        this.genres = genres;
+    }
+
     //region GettersAndSetters
     public Integer getId() {
         return id;
