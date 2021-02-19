@@ -18,13 +18,13 @@ public class MainController {
     private MainService mainService;
 
     @GetMapping("/")
-    public String homepage(Model model){
+    public String homepage(Model model) {
         model.addAttribute("message", "Welcome to TMDb!");
         return "index";
     }
 
     @GetMapping("/get-movie/{movie_id}")
-    public ResponseEntity<Object> getMovieById(@PathVariable ("movie_id") Integer movieId){
+    public ResponseEntity<Object> getMovieById(@PathVariable("movie_id") Integer movieId) {
         try {
             return ResponseEntity.ok(mainService.getMovieById(movieId));
         } catch (InvalidMovieIdException e) {
@@ -33,17 +33,13 @@ public class MainController {
     }
 
     @GetMapping("/list")
-    public String listAllMovies(Model model, @RequestParam (required = false) Integer page){
+    @ResponseBody
+    public ResponseEntity<?> listAllMovies(Model model, @RequestParam Integer seriesId, @RequestParam Integer season) {
         try {
-            if (page == null) {
-                model.addAttribute("movieList", mainService.getAllMovies());
-            } else {
-                model.addAttribute("movieList", mainService.getAllMovies(page));
-            }
+                return ResponseEntity.ok(mainService.getAllMovies(seriesId,season));
         } catch (IOException e) {
-            model.addAttribute("message", "Sorry, something went wrong with getting the list!");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return "index";
     }
 
 

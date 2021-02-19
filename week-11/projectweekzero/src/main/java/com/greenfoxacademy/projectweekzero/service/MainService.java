@@ -2,13 +2,14 @@ package com.greenfoxacademy.projectweekzero.service;
 
 import com.greenfoxacademy.projectweekzero.controller.TheMovieDatabase;
 import com.greenfoxacademy.projectweekzero.exception.InvalidMovieIdException;
+import com.greenfoxacademy.projectweekzero.model.Episode;
 import com.greenfoxacademy.projectweekzero.model.Movie;
-import com.greenfoxacademy.projectweekzero.model.MovieListDTO;
+import com.greenfoxacademy.projectweekzero.model.EpisodeListDTO;
+import com.greenfoxacademy.projectweekzero.repo.EpisodeRepository;
 import com.greenfoxacademy.projectweekzero.repo.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,6 +22,8 @@ public class MainService {
 
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private EpisodeRepository episodeRepository;
 
 
     public Movie getMovieById (Integer id) throws InvalidMovieIdException {
@@ -44,33 +47,31 @@ public class MainService {
         return movie;
     }
 
-    private void getAllMoviesFromTMDb (Integer page) throws IOException {
+    public List<Episode> getAllMoviesFromTMDb (Integer seriesId, Integer season) throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(System.getenv("TMDB_URL"))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         TheMovieDatabase movieRequest = retrofit.create(TheMovieDatabase.class);
-        Call<MovieListDTO> call = movieRequest.getAllMovie(page, System.getenv("API_KEY"));
-        Response<MovieListDTO> movieResponse = call.execute();
-        saveListToDatabase(movieResponse);
+        Call<EpisodeListDTO> call = movieRequest.getAllMovie(seriesId, season, System.getenv("API_KEY"));
+        System.out.println(call);
+        Response<EpisodeListDTO> movieResponse = call.execute();
+        List<Episode> episodeList = movieResponse.body().getEpisodes();
+        saveListToDatabase(episodeList);
+        return episodeList;
     }
 
-    private void saveListToDatabase(Response<MovieListDTO> movieResponse) {
-        movieRepository.deleteAll();
+    private void saveListToDatabase(List<Episode> episodeList) {
         try {
-        movieResponse.body().getResults().forEach(movie -> movieRepository.save(movie));
+            episodeList.forEach(episode -> episodeRepository.save(episode));
         } catch (NullPointerException ex){
                     System.out.println("No popular movies found");
         }
     }
 
-    public List<Movie> getAllMovies() throws IOException {
-        return getAllMovies(1);
-    }
-
-    public List<Movie> getAllMovies(Integer page) throws IOException {
-        getAllMoviesFromTMDb(page);
-        return (List<Movie>) movieRepository.findAll();
+    public List<Episode> getAllMovies(Integer seriesId, Integer season) throws IOException {
+        getAllMoviesFromTMDb(seriesId, season);
+        return (List<Episode>) episodeRepository.findAll();
     }
 }

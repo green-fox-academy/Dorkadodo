@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Movie {
@@ -25,17 +26,11 @@ public class Movie {
     private String status;
     private String title;
 
-    @ManyToMany
-    @JoinTable(
-            name="movie_genres",
-            joinColumns = @JoinColumn(name="movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genres = null;
 
     public Movie() {
     }
 
-    public Movie(Integer id, String imdbId, String originalTitle, String overview, String releaseDate, Integer runtime, String status, String title, List<Genre> genres) {
+    public Movie(Integer id, String imdbId, String originalTitle, String overview, String releaseDate, Integer runtime, String status, String title) {
         this.id = id;
         this.imdbId = imdbId;
         this.originalTitle = originalTitle;
@@ -44,7 +39,6 @@ public class Movie {
         this.runtime = runtime;
         this.status = status;
         this.title = title;
-        this.genres = genres;
     }
 
     //region GettersAndSetters
@@ -112,13 +106,22 @@ public class Movie {
         this.title = title;
     }
 
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
     //endregion
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Movie)) return false;
+        Movie movie = (Movie) o;
+        return Objects.equals(getId(), movie.getId()) &&
+                Objects.equals(getImdbId(), movie.getImdbId()) &&
+                Objects.equals(getOriginalTitle(), movie.getOriginalTitle()) &&
+                Objects.equals(getOverview(), movie.getOverview()) &&
+                Objects.equals(getReleaseDate(), movie.getReleaseDate()) &&
+                Objects.equals(getRuntime(), movie.getRuntime()) &&
+                Objects.equals(getStatus(), movie.getStatus()) &&
+                Objects.equals(getTitle(), movie.getTitle());
+    }
 
 }
