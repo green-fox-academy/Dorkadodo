@@ -34,7 +34,7 @@ public class MyWebSecurityAdapter extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/authenticate", "/login", "/static/getJwt.js").permitAll()
+                .authorizeRequests().antMatchers("/authenticate", "/login", "/login.js", "/styles.css").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

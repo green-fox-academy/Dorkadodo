@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <form action="/authenticate" method="post">
@@ -14,28 +15,6 @@
 
 </form>
 
-<script>
-    function loginFunction() {
-        let username = document.getElementById("username");
-        let password = document.getElementById("password");
-
-        let xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "/authenticate", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-
-                // Print received data from server
-                localStorage.setItem('JWT_AUTH', this.responseText);
-
-            }
-        };
-
-        var data = JSON.stringify({"username": username.value, "password": password.value});
-        xhr.send(data);
-    }
-</script>
+<script type="text/javascript" src="login.js"></script>
 </body>
 </html>
